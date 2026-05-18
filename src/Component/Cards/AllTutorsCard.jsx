@@ -10,9 +10,9 @@ import {
   FaMapMarkerAlt,
 } from "react-icons/fa";
 
-const AvailableTutorsCard = ({ tutor }) => {
-    //  if (!tutor) return null;
-    console.log('tutor', tutor);
+const AllTutorsCard = ({ tutor }) => {
+   if (!tutor) return null;
+//   console.log("tutor", tutor);
   return (
     <div className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition border">
       {/* Image */}
@@ -67,13 +67,11 @@ const AvailableTutorsCard = ({ tutor }) => {
 
         {/* Button */}
         <button className="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
-            <Link href={'/tutors'} >
-          Book Session
-        </Link>
+          <Link href={"/tutors/tutorId"}>View Details</Link>
         </button>
       </div>
     </div>
   );
 };
 
-export default AvailableTutorsCard;
+export default AllTutorsCard;

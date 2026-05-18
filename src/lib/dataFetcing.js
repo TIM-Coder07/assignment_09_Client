@@ -17,3 +17,12 @@ export const homeData = async () => {
     const data = await res.json()
     return data
 }
+
+//GET TUTORS 
+export const getTutors = async () => {
+  const res = await fetch("http://localhost:8000/courses", {
+    cache: "no-store",
+  });
+
+  return res.json();
+};
