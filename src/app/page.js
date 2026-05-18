@@ -1,5 +1,6 @@
 import AvailableTutors from "@/Component/AvailableTutors";
 import Banner from "@/Component/Banner/Banner";
+import Collaboration from "@/Component/Collaboration";
 import Image from "next/image";
 
 export default function Home() {
@@ -11,6 +12,10 @@ export default function Home() {
 
   <section className="mt-10">
     <AvailableTutors />
+  </section>
+
+  <section className="mt-10">
+    <Collaboration></Collaboration>
   </section>
 </div>
   );
