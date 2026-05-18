@@ -12,13 +12,16 @@
     "@better-auth/mongo-adapter": "^1.6.11",
     "@heroui/react": "^3.0.5",
     "@heroui/styles": "^3.0.5",
+    "@nextui-org/react": "^2.6.11",
     "better-auth": "^1.6.11",
+    "framer-motion": "^12.38.0",
     "mongodb": "^7.2.0",
     "next": "16.2.6",
     "react": "19.2.4",
     "react-dom": "19.2.4"
   },
   "devDependencies": {
+    "@gravity-ui/icons": "^2.18.0",
     "@tailwindcss/postcss": "^4",
     "eslint": "^9",
     "eslint-config-next": "16.2.6",
