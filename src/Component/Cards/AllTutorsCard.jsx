@@ -11,6 +11,7 @@ import {
 } from "react-icons/fa";
 
 const AllTutorsCard = ({ tutor }) => {
+  console.log("tutor", tutor)
    if (!tutor) return null;
 //   console.log("tutor", tutor);
   return (
@@ -67,7 +68,7 @@ const AllTutorsCard = ({ tutor }) => {
 
         {/* Button */}
         <button className="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
-          <Link href={"/tutors/tutorId"}>View Details</Link>
+          <Link href={`/tutors/${tutor._id}`}>View Details</Link>
         </button>
       </div>
     </div>

@@ -26,3 +26,17 @@ export const getTutors = async () => {
 
   return res.json();
 };
+
+
+// GET TUTORS DETAILS 
+export const getDetailsById = async (tutorId) => {
+  const res = await fetch(`http://localhost:8000/courses/${tutorId}`, {
+    cache: "no-store",
+  });
+
+//   if (!res.ok) {
+//     throw new Error("Failed to fetch tutor details");
+//   }
+
+  return await res.json();
+};
