@@ -19,7 +19,7 @@ import { useState } from "react";
 import { Mail, Lock, Eye, EyeOff, UserPlus } from "lucide-react";
 import toast from "react-hot-toast";
 
-const LogInPage = () => {
+const SignUpPage = () => {
   const router = useRouter();
 
   const [isShow, setIsShow] = useState(false);
@@ -40,6 +40,8 @@ const LogInPage = () => {
         email: userData.email,
         password: userData.password,
       });
+      console.log(data);
+      
 
       if (error) {
         toast.error(error);
@@ -49,8 +51,6 @@ const LogInPage = () => {
       if (data) {
         router.push("/login");
       }
-    } catch (err) {
-      console.log(err);
     } finally {
       setLoading(false);
     }
@@ -58,19 +58,15 @@ const LogInPage = () => {
 
   return (
     <div className="relative my-5 min-h-screen overflow-hidden bg-[#070B14] flex items-center justify-center px-4 py-10">
-
       {/* BACKGROUND */}
       <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
 
       {/* CARD */}
       <Card className="relative w-full max-w-5xl overflow-hidden rounded-[40px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)]">
-
         <div className="grid md:grid-cols-2">
-
           {/* LEFT SIDE */}
           <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-cyan-500/20 border-r border-white/10">
-
             <div>
               <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
                 <UserPlus className="text-purple-300" size={28} />
@@ -83,19 +79,16 @@ const LogInPage = () => {
               </h1>
 
               <p className="mt-5 text-gray-300">
-                Log In your account and start exploring the platform instantly.
+                Create your account and start exploring the platform instantly.
               </p>
             </div>
           </div>
 
           {/* RIGHT SIDE */}
           <div className="p-8 md:p-12">
-
             {/* HEADER */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-white">
-                Log In Account
-              </h2>
+              <h2 className="text-3xl font-bold text-white">Create Account</h2>
 
               <p className="text-gray-400 mt-2">
                 Fill in your details to register
@@ -104,6 +97,42 @@ const LogInPage = () => {
 
             {/* FORM */}
             <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
+              {/* NAME */}
+              <TextField name="name" isRequired>
+                <Label className="text-gray-300">Full Name</Label>
+
+                <div className="relative">
+                  <UserPlus
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+
+                  <Input
+                    placeholder="John Doe"
+                    className="pl-12 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
+                  />
+                </div>
+
+                <FieldError />
+              </TextField>
+              {/* Photo Url */}
+              <TextField name="image" isRequired>
+                <Label className="text-gray-300">Photo Url</Label>
+
+                <div className="relative">
+                  <UserPlus
+                    size={18}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 text-gray-400"
+                  />
+
+                  <Input
+                    placeholder="http://hmrfyhm"
+                    className="pl-12 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
+                  />
+                </div>
+
+                <FieldError />
+              </TextField>
 
               {/* EMAIL */}
               <TextField name="email" isRequired>
@@ -171,15 +200,13 @@ const LogInPage = () => {
 
             {/* FOOTER */}
             <p className="text-center text-sm text-gray-400 mt-8">
-              You don`&apos;`t have an account?
-
-              <Link href="/signup">
+              Already have account?
+              <Link href="/login">
                 <span className="ml-2 text-purple-400 font-semibold">
-                  sign up
+                  Login
                 </span>
               </Link>
             </p>
-
           </div>
         </div>
       </Card>
@@ -187,4 +214,4 @@ const LogInPage = () => {
   );
 };
 
-export default LogInPage;
+export default SignUpPage;

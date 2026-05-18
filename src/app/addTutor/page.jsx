@@ -22,7 +22,7 @@ const AddTutorPage = () => {
 
     const result = await postData(formData);
 
-    console.log("postData result:", result);
+    // console.log("postData result:", result);
 
     formRef.current?.reset();
   };
