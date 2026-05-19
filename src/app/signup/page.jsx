@@ -40,18 +40,17 @@ const SignUpPage = () => {
         email: userData.email,
         password: userData.password,
       });
-      console.log(data);
-      
 
-      if (error) {
-        toast.error(error);
+      if (!data) {
+        toast.error("Invalid credentials");
         return;
       }
 
-      if (data) {
-        router.push("/login");
-      }
-    } finally {
+      toast.success("Login successful");
+      router.push("/");
+
+    } 
+    finally {
       setLoading(false);
     }
   };

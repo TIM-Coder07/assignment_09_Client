@@ -1,75 +1,90 @@
+"use client";
+
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
-import {
-  FaEnvelope,
-  FaBook,
-  FaClock,
-  FaMoneyBill,
-  FaUniversity,
-  FaMapMarkerAlt,
-} from "react-icons/fa";
 
-const AllTutorsCard = ({ tutor }) => {
-  console.log("tutor", tutor)
-   if (!tutor) return null;
-//   console.log("tutor", tutor);
+import {
+  Clock,
+  DollarSign,
+  MapPin,
+  Users,
+  CalendarDays,
+  GraduationCap,
+  BookOpen,
+} from "lucide-react";
+
+const AllTutorsCard = ({ course }) => {
   return (
-    <div className="bg-white shadow-md rounded-2xl overflow-hidden hover:shadow-xl transition border">
-      {/* Image */}
-      <div className="relative w-full h-48">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md border hover:shadow-2xl hover:-translate-y-1 transition-all duration-300">
+      {/* IMAGE */}
+      <div className="relative h-56 w-full">
         <Image
-          src={tutor.photo}
-          alt={tutor.name}
+          src={course?.courseImage || "/placeholder.png"}
+          alt={course?.courseTitle}
           fill
           className="object-cover"
         />
+
+        <span className="absolute top-4 left-4 bg-black/70 text-white text-xs px-3 py-1 rounded-full">
+          {course?.category}
+        </span>
       </div>
 
-      {/* Content */}
-      <div className="p-4 space-y-2">
-        <h2 className="text-xl font-bold">{tutor.name}</h2>
+      {/* CONTENT */}
+      <div className="p-5 space-y-3">
+        <h2 className="text-xl font-bold text-gray-800">
+          {course?.courseTitle}
+        </h2>
 
-        {/* Email */}
-        <p className="flex items-center gap-2 text-sm text-gray-600">
-          <FaEnvelope /> {tutor.email}
+        {/* Tutor */}
+        <div className="flex items-center gap-2 text-sm text-gray-600">
+          <GraduationCap className="w-4 h-4 text-blue-500" />
+          {course?.tutorName}
+        </div>
+
+        <p className="text-sm text-gray-600 line-clamp-2">
+          {course?.description}
         </p>
 
-        {/* Subject */}
-        <p className="flex items-center gap-2 text-sm">
-          <FaBook /> <span className="font-medium">Subject:</span>{" "}
-          {tutor.subject}
-        </p>
+        {/* INFO */}
+        <div className="grid grid-cols-2 gap-3 text-sm text-gray-700">
+          <div className="flex items-center gap-2 col-span-2">
+            <Clock className="w-4 h-4 text-blue-500" />
+            {course?.classSchedule}
+          </div>
 
-        {/* Availability */}
-        <p className="flex items-center gap-2 text-sm">
-          <FaClock /> {tutor.availability}
-        </p>
+          <div className="flex items-center gap-2">
+            <DollarSign className="w-4 h-4 text-green-500" />৳
+            {course?.courseFee}
+          </div>
 
-        {/* Fee */}
-        <p className="flex items-center gap-2 text-sm">
-          <FaMoneyBill /> ${tutor.fee}/hour
-        </p>
+          <div className="flex items-center gap-2">
+            <Users className="w-4 h-4 text-pink-500" />
+            {course?.availableSeats} Seats
+          </div>
 
-        {/* Institution */}
-        <p className="flex items-center gap-2 text-sm">
-          <FaUniversity /> {tutor.institution}
-        </p>
+          <div className="flex items-center gap-2 col-span-2">
+            <CalendarDays className="w-4 h-4 text-red-500" />
+            Starts: {course?.startDate}
+          </div>
 
-        {/* Location */}
-        <p className="flex items-center gap-2 text-sm">
-          <FaMapMarkerAlt /> {tutor.location}
-        </p>
+          <div className="flex items-center gap-2 col-span-2">
+            <MapPin className="w-4 h-4 text-orange-500" />
+            {course?.location}
+          </div>
 
-        {/* Mode Badge */}
-        <span className="inline-block mt-2 px-3 py-1 text-xs rounded-full bg-blue-100 text-blue-600">
-          {tutor.mode}
-        </span>
+          <div className="col-span-2 text-sm text-gray-700">
+            💻 {course?.teachingMode}
+          </div>
+        </div>
 
-        {/* Button */}
-        <button className="mt-4 w-full bg-black text-white py-2 rounded-lg hover:bg-gray-800 transition">
-          <Link href={`/tutors/${tutor._id}`}>View Details</Link>
-        </button>
+        <Link
+          href={`/tutors/${course?._id}`}
+          className="block w-full mt-3 bg-black hover:bg-gray-800 text-white py-3 rounded-xl font-semibold text-center"
+        >
+          View Details
+        </Link>
       </div>
     </div>
   );

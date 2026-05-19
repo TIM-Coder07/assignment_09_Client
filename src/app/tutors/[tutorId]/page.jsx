@@ -1,19 +1,25 @@
 import DetailsCard from "@/Component/Cards/DetailsCard";
 import { getDetailsById } from "@/lib/dataFetcing";
+import { auth } from "@/lib/auth";
+import { headers } from "next/headers";
 
 const DetailsPage = async ({ params }) => {
-//   console.log("PARAMS:", params);
-const {tutorId} = await params
+  const { tutorId } = await params;
+  console.log("tutorId", tutorId);
+  
 
   const tutorDetails = await getDetailsById(tutorId);
 
-  if (!tutorDetails) {
-    return <h1>Tutor Not Found</h1>;
-  }
+  const session = await auth.api.getSession({
+    headers: await headers(),
+  });
 
   return (
     <div className="mt-6">
-      <DetailsCard tutorDetails={tutorDetails}></DetailsCard>
+      <DetailsCard
+        tutorDetails={tutorDetails}
+        user={session?.user}
+      />
     </div>
   );
 };

@@ -26,35 +26,36 @@ const LogInPage = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
-    e.preventDefault();
+  e.preventDefault();
 
-    const formData = new FormData(e.currentTarget);
-    const userData = Object.fromEntries(formData.entries());
+  const formData = new FormData(e.currentTarget);
+  const userData = Object.fromEntries(formData.entries());
 
-    try {
-      setLoading(true);
+  try {
+    setLoading(true);
 
-      const { data, error } = await authClient.signUp.email({
-        name: userData.name,
-        image: userData.image,
-        email: userData.email,
-        password: userData.password,
-      });
+    const { data, error } = await authClient.signIn.email({
+      email: userData.email,
+      password: userData.password,
+    });
 
-      if (error) {
-        toast.error(error);
-        return;
-      }
-
-      if (data) {
-        router.push("/login");
-      }
-    } catch (err) {
-      console.log(err);
-    } finally {
-      setLoading(false);
+    if (error) {
+      toast.error(error?.message || "Login failed");
+      return;
     }
-  };
+
+    if (data) {
+      toast.success("Login successful");
+      router.push("/");
+    }
+
+  } catch (err) {
+    console.log(err);
+    toast.error("Something went wrong");
+  } finally {
+    setLoading(false);
+  }
+};
 
   return (
     <div className="relative my-5 min-h-screen overflow-hidden bg-[#070B14] flex items-center justify-center px-4 py-10">

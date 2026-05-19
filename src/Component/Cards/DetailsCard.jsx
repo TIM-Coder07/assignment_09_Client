@@ -4,79 +4,87 @@ import {
   MapPin,
   BookOpen,
   DollarSign,
-  User,
+  Users,
+  Code,
 } from "lucide-react";
+
 import { ModalForm } from "../ExtraFetures/ModalForm";
 
-const DetailsCard = ({ tutorDetails }) => {
+const DetailsCard = ({ tutorDetails, user }) => {
   if (!tutorDetails) return null;
 
   return (
-    <div className="max-w-4xl mx-auto bg-white shadow-lg rounded-2xl overflow-hidden border">
+    <div className="max-w-md mx-auto bg-white rounded-2xl shadow-lg border overflow-hidden hover:shadow-2xl transition">
 
-      {/* Top Section */}
-      <div className="grid md:grid-cols-2 gap-6">
+      {/* IMAGE */}
+      <div className="relative h-44 w-full">
+        <img
+          src={tutorDetails.courseImage}
+          alt={tutorDetails.courseTitle}
+          className="w-full h-full object-cover"
+        />
 
-        {/* Image */}
-        <div className="h-72 md:h-full">
-          <img
-            src={tutorDetails.photo}
-            alt={tutorDetails.name}
-            className="w-full h-full object-cover"
-          />
+        <span className="absolute top-3 left-3 bg-purple-600 text-white text-xs px-3 py-1 rounded-full">
+          {tutorDetails.category}
+        </span>
+      </div>
+
+      {/* CONTENT */}
+      <div className="p-4 space-y-3">
+
+        {/* TITLE */}
+        <div>
+          <h2 className="text-xl font-bold text-gray-800">
+            {tutorDetails.courseTitle}
+          </h2>
+          <p className="text-sm text-gray-500">
+            {tutorDetails.tutorName}
+          </p>
         </div>
 
-        {/* Info */}
-        <div className="p-6 flex flex-col justify-center gap-4">
+        {/* INFO */}
+        <div className="grid grid-cols-2 gap-3 text-sm">
 
-          {/* Name */}
-          <h1 className="text-3xl font-bold text-gray-800 flex items-center gap-2">
-            <User size={22} />
-            {tutorDetails.name}
-          </h1>
-
-          {/* Subject */}
           <p className="flex items-center gap-2 text-gray-600">
-            <BookOpen size={18} />
-            {tutorDetails.subject}
+            <DollarSign size={16} /> ৳{tutorDetails.courseFee}
           </p>
 
-          {/* Fee */}
           <p className="flex items-center gap-2 text-gray-600">
-            <DollarSign size={18} />
-            Fee: {tutorDetails.fee} / hour
+            <Clock size={16} /> {tutorDetails.courseDuration}
           </p>
 
-          {/* Availability */}
           <p className="flex items-center gap-2 text-gray-600">
-            <Clock size={18} />
-            {tutorDetails.availability}
+            <BookOpen size={16} /> {tutorDetails.totalClasses}
           </p>
 
-          {/* Location */}
           <p className="flex items-center gap-2 text-gray-600">
-            <MapPin size={18} />
-            {tutorDetails.location}
+            <Users size={16} /> {tutorDetails.availableSeats}
           </p>
 
-          {/* Start Date */}
-          <p className="flex items-center gap-2 text-gray-600">
-            <Calendar size={18} />
-            Start Date: {tutorDetails.startDate}
+          <p className="flex items-center gap-2 text-gray-600 col-span-2">
+            <Calendar size={16} /> {tutorDetails.classSchedule}
           </p>
 
-          {/* Mode badge */}
-          <div>
-            <span className="inline-block px-4 py-1 text-sm rounded-full bg-black text-white">
-              {tutorDetails.mode}
-            </span>
-          </div>
+          <p className="flex items-center gap-2 text-gray-600 col-span-2">
+            <MapPin size={16} /> {tutorDetails.location}
+          </p>
 
-          <div className="w-full">
-            <ModalForm></ModalForm>
-          </div>
+          <p className="flex items-center gap-2 text-gray-600 col-span-2">
+            <Code size={16} /> {tutorDetails.teachingMode}
+          </p>
 
         </div>
+
+        {/* DESCRIPTION */}
+        <p className="text-sm text-gray-500 line-clamp-2">
+          {tutorDetails.description}
+        </p>
+
+        {/* BUTTON */}
+        <div className="pt-2">
+          <ModalForm user={user} tutorDetails={tutorDetails} />
+        </div>
+
       </div>
     </div>
   );

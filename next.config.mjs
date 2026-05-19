@@ -7,7 +7,7 @@ const nextConfig = {
       },
       {
         protocol: "https",
-        hostname: "img.magnific.com",
+        hostname: "***",
       },
     ],
   },

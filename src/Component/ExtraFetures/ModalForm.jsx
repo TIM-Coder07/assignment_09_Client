@@ -1,57 +1,107 @@
 "use client";
 
-import {Envelope} from "@gravity-ui/icons";
-import {Button, Input, Label, Modal, Surface, TextField} from "@heroui/react";
+import { Mail, Send } from "lucide-react";
+import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
+import { handleBookNow } from "@/lib/dataFetcing";
+import { useRouter } from "next/navigation";
 
-export function ModalForm() {
+export function ModalForm({ user, tutorDetails }) {
+  const { email } = user;
+  const { tutorName, category } = tutorDetails;
+  const router = useRouter();
+
+
+  const handelBooking = (e) => {
+    e.preventDefault();
+    handleBookNow(user, tutorDetails);
+      router.refresh(); 
+  };
+
   return (
     <Modal>
-      <Button variant="tertiary">Book Now</Button>
-      <Modal.Backdrop>
-        <Modal.Container placement="auto">
-          <Modal.Dialog className="sm:max-w-md">
+      {/* TRIGGER BUTTON */}
+      <Button className=" text-white font-semibold px-6 py-2 rounded-xl shadow-lg hover:scale-105 transition">
+        Book Session
+      </Button>
+
+      <Modal.Backdrop className="bg-black/50 backdrop-blur-sm">
+        <Modal.Container placement="center">
+          <Modal.Dialog className="sm:max-w-lg rounded-3xl overflow-hidden bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl">
             <Modal.CloseTrigger />
-            <Modal.Header>
-              <Modal.Icon className="bg-accent-soft text-accent-soft-foreground">
-                <Envelope className="size-5" />
+
+            {/* HEADER */}
+            <Modal.Header className="p-6 border-b border-white/10">
+              <Modal.Icon className="bg-white/10 text-cyan-300 rounded-xl p-3">
+                <Mail className="size-6" />
               </Modal.Icon>
-              <Modal.Heading>Contact Us</Modal.Heading>
-              <p className="mt-1.5 text-sm leading-5 text-muted">
-                Fill out the form below and get back to you. The modal adapts automatically
-                when the keyboard appears on mobile.
+
+              <Modal.Heading className="text-white text-2xl font-bold mt-3">
+                Book Your Session
+              </Modal.Heading>
+
+              <p className="mt-2 text-sm text-gray-300">
+                Fill up the form below to schedule your tutoring session.
               </p>
             </Modal.Header>
+
+            {/* BODY */}
             <Modal.Body className="p-6">
-              <Surface variant="default">
+              <Surface className="bg-transparent">
                 <form className="flex flex-col gap-4">
-                  <TextField className="w-full" name="name" type="text">
-                    <Label>Name</Label>
-                    <Input placeholder="Enter your name" />
+                  <TextField name="name">
+                    <Label className="text-gray-300">Name</Label>
+                    <Input className="h-12 rounded-xl bg-white/5 border border-white/10 text-white" />
                   </TextField>
-                  <TextField className="w-full" name="email" type="email">
-                    <Label>Email</Label>
-                    <Input placeholder="Enter your email" />
+                  <TextField name="email">
+                    <Label className="text-gray-300">Email</Label>
+                    <Input
+                      value={email}
+                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
+                    />
                   </TextField>
-                  <TextField className="w-full" name="phone" type="tel">
-                    <Label>Phone</Label>
-                    <Input placeholder="Enter your phone number" />
+                  <TextField name="phone">
+                    <Label className="text-gray-300">Phone</Label>
+                    <Input className="h-12 rounded-xl bg-white/5 border border-white/10 text-white" />
                   </TextField>
-                  <TextField className="w-full" name="company">
-                    <Label>Company</Label>
-                    <Input placeholder="Enter your company name" />
+
+                  {/* tutor Name */}
+                  <TextField name="tutorName">
+                    <Label className="text-gray-300">Tutor Name</Label>
+                    <Input
+                      value={tutorName}
+                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
+                    />
                   </TextField>
-                  <TextField className="w-full" name="message">
-                    <Label>Message</Label>
-                    <Input placeholder="Enter your message" />
+
+                  {/* subject */}
+                  <TextField name="subject">
+                    <Label className="text-gray-300">Subject</Label>
+                    <Input
+                      value={category}
+                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
+                    />
                   </TextField>
                 </form>
               </Surface>
             </Modal.Body>
-            <Modal.Footer>
-              <Button slot="close" variant="secondary">
+
+            {/* FOOTER */}
+            <Modal.Footer className="p-6 border-t border-white/10 flex gap-3">
+              <Button
+                slot="close"
+                className="flex-1 bg-white/10 text-white hover:bg-white/20 rounded-xl"
+              >
                 Cancel
               </Button>
-              <Button slot="close">Send Message</Button>
+
+              <Button
+                onClick={handelBooking}
+                slot="close"
+                className="flex-1  text-white rounded-xl font-semibold shadow-lg hover:scale-105 transition"
+              >
+                <Send className="size-4 mr-2" />
+                Book
+              </Button>
             </Modal.Footer>
           </Modal.Dialog>
         </Modal.Container>

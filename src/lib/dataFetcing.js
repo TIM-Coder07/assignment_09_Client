@@ -1,3 +1,5 @@
+import toast from "react-hot-toast";
+
 // POST ----------------
 export const postData = async (data) => {
   const res = await fetch("http://localhost:8000/courses", {
@@ -28,15 +30,38 @@ export const getTutors = async () => {
 };
 
 
-// GET TUTORS DETAILS 
+// GET TUTORS DETAILS ---------->
 export const getDetailsById = async (tutorId) => {
   const res = await fetch(`http://localhost:8000/courses/${tutorId}`, {
     cache: "no-store",
   });
-
-//   if (!res.ok) {
-//     throw new Error("Failed to fetch tutor details");
-//   }
-
-  return await res.json();
+  return res.json();
 };
+
+// HANDEL BOOK NOW BUTTON ------------->
+export const handleBookNow = async (user, tutor) => {
+  const bookingInfo = {
+    studentName: user.displayName,
+    studentEmail: user.email,
+  };
+
+  const res = await fetch(
+    `http://localhost:8000/book-session/${tutor._id}`,
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(bookingInfo),
+    }
+  );
+
+  const data = await res.json();
+
+  if (data.success) {
+    toast.success(data.message);
+  } else {
+    toast.error(data.message);
+  }
+};
+

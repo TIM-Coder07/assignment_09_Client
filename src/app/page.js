@@ -5,20 +5,18 @@ import Image from "next/image";
 
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto px-4">
-  <section>
-    <Banner />
-  </section>
+    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+      <section>
+        <Banner />
+      </section>
 
-  <section className="mt-10">
-    <AvailableTutors />
-  </section>
+      <section>
+        <AvailableTutors />
+      </section>
 
-  <section className="mt-10">
-    <Collaboration></Collaboration>
-  </section>
-</div>
+      <section>
+        <Collaboration />
+      </section>
+    </div>
   );
 }
-
-

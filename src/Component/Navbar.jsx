@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import { HiMenuAlt3, HiX } from "react-icons/hi";
 
 const NavbarH = () => {
   const [open, setOpen] = useState(false);
@@ -18,79 +19,79 @@ const NavbarH = () => {
 
   const isActive = (href) => pathname === href;
 
-  const accent = "text-purple-600";
-  const accentHover = "hover:text-purple-600";
-  const underline = "bg-purple-600";
-  const button = "bg-gradient-to-r from-purple-600 to-indigo-600";
-
   return (
-    <nav
-      className="sticky top-0 z-50 
-bg-linear-to-r from-white via-purple-50 to-indigo-50
-backdrop-blur-md
-border-b border-purple-100
-shadow-sm px-5 py-3 flex justify-between items-center"
-    >
-      {/* Logo */}
-      <div className="font-extrabold text-xl tracking-wide text-purple-700">
-        MediQueue
-      </div>
+    <nav className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-sm">
+      <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+        
+        {/* Logo */}
+        <Link href="/">
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent tracking-wide">
+            MediQueue
+          </h1>
+        </Link>
 
-      {/* Desktop Menu */}
-      <div className="hidden md:flex gap-8">
-        {navItems.map((item) => (
-          <Link
-            key={item.href}
-            href={item.href}
-            className={`relative font-medium transition duration-200 ${
-              isActive(item.href) ? accent : `text-gray-600 ${accentHover}`
-            }`}
-          >
-            {item.name}
-
-            <span
-              className={`absolute left-0 -bottom-1 h-[2px] transition-all duration-300 ${
-                isActive(item.href) ? `w-full ${underline}` : "w-0"
+        {/* Desktop Menu */}
+        <div className="hidden md:flex items-center gap-8">
+          {navItems.map((item) => (
+            <Link
+              key={item.href}
+              href={item.href}
+              className={`relative text-sm font-medium transition-all duration-300 ${
+                isActive(item.href)
+                  ? "text-purple-600"
+                  : "text-gray-700 hover:text-purple-600"
               }`}
-            />
+            >
+              {item.name}
+
+              <span
+                className={`absolute left-0 -bottom-1 h-[2px] rounded-full bg-purple-600 transition-all duration-300 ${
+                  isActive(item.href) ? "w-full" : "w-0"
+                }`}
+              ></span>
+            </Link>
+          ))}
+        </div>
+
+        {/* Auth Buttons */}
+        <div className="hidden md:flex items-center gap-4">
+          <Link
+            href="/login"
+            className="text-gray-700 hover:text-purple-600 transition font-medium"
+          >
+            Login
           </Link>
-        ))}
-      </div>
 
-      {/* Auth buttons */}
-      <div className="hidden md:flex gap-3 items-center">
-        <Link
-          href="/login"
-          className={`text-gray-600 ${accentHover} transition`}
+          <Link
+            href="/signup"
+            className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:scale-105 transition duration-300"
+          >
+            Sign Up
+          </Link>
+        </div>
+
+        {/* Mobile Button */}
+        <button
+          onClick={() => setOpen(!open)}
+          className="md:hidden text-3xl text-gray-700 transition"
         >
-          Login
-        </Link>
-
-        <Link
-          href="/signup"
-          className={`px-4 py-1.5 rounded-full text-white font-medium ${button} hover:opacity-90 transition shadow-md`}
-        >
-          Sign Up
-        </Link>
+          {open ? <HiX /> : <HiMenuAlt3 />}
+        </button>
       </div>
-
-      {/* Mobile Toggle */}
-      <button
-        className="md:hidden text-2xl text-gray-700"
-        onClick={() => setOpen(!open)}
-      >
-        {open ? "✕" : "☰"}
-      </button>
 
       {/* Mobile Menu */}
-      {open && (
-        <div className="absolute top-14 left-0 w-full bg-white/95 backdrop-blur-md shadow-lg border-t border-gray-200 p-5 flex flex-col gap-4 md:hidden animate-in fade-in slide-in-from-top">
+      <div
+        className={`md:hidden overflow-hidden transition-all duration-300 ${
+          open ? "max-h-[500px]" : "max-h-0"
+        }`}
+      >
+        <div className="px-6 pb-5 pt-2 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex flex-col gap-4">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`font-medium transition ${
+              className={`text-sm font-medium transition ${
                 isActive(item.href)
                   ? "text-purple-600"
                   : "text-gray-700 hover:text-purple-600"
@@ -100,19 +101,25 @@ shadow-sm px-5 py-3 flex justify-between items-center"
             </Link>
           ))}
 
-          <Link
-            href="/login"
-            onClick={() => setOpen(false)}
-            className="text-gray-600 hover:text-purple-600"
-          >
-            Login
-          </Link>
+          <div className="flex flex-col gap-3 pt-3 border-t border-gray-200">
+            <Link
+              href="/login"
+              onClick={() => setOpen(false)}
+              className="text-center py-2 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition"
+            >
+              Login
+            </Link>
 
-          <button className="bg-gradient-to-r from-purple-600 to-indigo-600 text-white py-2 rounded-full hover:opacity-90 transition">
-            Sign Up
-          </button>
+            <Link
+              href="/signup"
+              onClick={() => setOpen(false)}
+              className="text-center py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90 transition"
+            >
+              Sign Up
+            </Link>
+          </div>
         </div>
-      )}
+      </div>
     </nav>
   );
 };
