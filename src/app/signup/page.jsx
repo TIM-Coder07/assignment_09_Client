@@ -3,7 +3,6 @@
 import { authClient } from "@/lib/auth-client";
 import {
   Button,
-  Description,
   FieldError,
   Form,
   Input,
@@ -41,16 +40,21 @@ const SignUpPage = () => {
         password: userData.password,
       });
 
-      if (!data) {
-        toast.error("Invalid credentials");
+      if (error) {
+        toast.error(error.message || "Signup failed");
         return;
       }
 
-      toast.success("Login successful");
-      router.push("/");
+      if (!data) {
+        toast.error("Signup failed");
+        return;
+      }
 
-    } 
-    finally {
+      toast.success("Account created successfully");
+      router.push("/");
+    } catch (err) {
+      toast.error("Something went wrong");
+    } finally {
       setLoading(false);
     }
   };
@@ -72,9 +76,7 @@ const SignUpPage = () => {
               </div>
 
               <h1 className="mt-8 text-5xl font-black text-white">
-                Join Us
-                <br />
-                Today.
+                Join Us <br /> Today.
               </h1>
 
               <p className="mt-5 text-gray-300">
@@ -85,19 +87,16 @@ const SignUpPage = () => {
 
           {/* RIGHT SIDE */}
           <div className="p-8 md:p-12">
-            {/* HEADER */}
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-white">Create Account</h2>
-
               <p className="text-gray-400 mt-2">
                 Fill in your details to register
               </p>
             </div>
 
-            {/* FORM */}
             <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
               {/* NAME */}
-              <TextField name="name" isRequired>
+              <TextField>
                 <Label className="text-gray-300">Full Name</Label>
 
                 <div className="relative">
@@ -107,6 +106,7 @@ const SignUpPage = () => {
                   />
 
                   <Input
+                    name="name"
                     placeholder="John Doe"
                     className="pl-12 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
                   />
@@ -114,9 +114,10 @@ const SignUpPage = () => {
 
                 <FieldError />
               </TextField>
-              {/* Photo Url */}
-              <TextField name="image" isRequired>
-                <Label className="text-gray-300">Photo Url</Label>
+
+              {/* IMAGE */}
+              <TextField>
+                <Label className="text-gray-300">Photo URL</Label>
 
                 <div className="relative">
                   <UserPlus
@@ -125,7 +126,8 @@ const SignUpPage = () => {
                   />
 
                   <Input
-                    placeholder="http://hmrfyhm"
+                    name="image"
+                    placeholder="https://example.com/photo.jpg"
                     className="pl-12 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
                   />
                 </div>
@@ -134,7 +136,7 @@ const SignUpPage = () => {
               </TextField>
 
               {/* EMAIL */}
-              <TextField name="email" isRequired>
+              <TextField>
                 <Label className="text-gray-300">Email</Label>
 
                 <div className="relative">
@@ -144,6 +146,7 @@ const SignUpPage = () => {
                   />
 
                   <Input
+                    name="email"
                     type="email"
                     placeholder="john@example.com"
                     className="pl-12 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
@@ -154,7 +157,7 @@ const SignUpPage = () => {
               </TextField>
 
               {/* PASSWORD */}
-              <TextField name="password" isRequired>
+              <TextField>
                 <Label className="text-gray-300">Password</Label>
 
                 <div className="relative">
@@ -164,6 +167,7 @@ const SignUpPage = () => {
                   />
 
                   <Input
+                    name="password"
                     type={isShow ? "text" : "password"}
                     placeholder="Enter password"
                     className="pl-12 pr-14 h-14 rounded-2xl bg-white/5 border border-white/10 text-white"
@@ -171,6 +175,7 @@ const SignUpPage = () => {
 
                   <button
                     type="button"
+                    tabIndex={-1}
                     onClick={() => setIsShow(!isShow)}
                     className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400"
                   >
@@ -185,13 +190,7 @@ const SignUpPage = () => {
               <Button
                 type="submit"
                 disabled={loading}
-                className="
-                  w-full h-14 rounded-2xl
-                  bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500
-                  text-white font-bold
-                  hover:scale-[1.02] active:scale-[0.98]
-                  transition
-                "
+                className="w-full h-14 rounded-2xl bg-gradient-to-r from-purple-500 via-blue-500 to-cyan-500 text-white font-bold hover:scale-[1.02] active:scale-[0.98] transition"
               >
                 {loading ? "Creating..." : "Create Account"}
               </Button>
@@ -199,7 +198,7 @@ const SignUpPage = () => {
 
             {/* FOOTER */}
             <p className="text-center text-sm text-gray-400 mt-8">
-              Already have account?
+              Already have an account?
               <Link href="/login">
                 <span className="ml-2 text-purple-400 font-semibold">
                   Login

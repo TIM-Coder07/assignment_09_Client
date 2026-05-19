@@ -65,3 +65,17 @@ export const handleBookNow = async (user, tutor) => {
   }
 };
 
+
+// MY TUTORS -----------------> 
+export const getMyTutorsByEmail = async (email) => {
+  const res = await fetch(
+    `http://localhost:8000/my-tutors?email=${email}`,
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Failed to fetch tutors");
+  }
+
+  return res.json();
+};

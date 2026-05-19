@@ -166,7 +166,7 @@ const LogInPage = () => {
                   transition
                 "
               >
-                {loading ? "Creating..." : "Create Account"}
+                {loading ? "Loging..." : "Log In"}
               </Button>
             </Form>
 
