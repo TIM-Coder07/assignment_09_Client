@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { authClient } from "@/lib/auth-client";
 import ProfileMenu from "./ProfileMenu";
@@ -10,6 +10,7 @@ import ProfileMenu from "./ProfileMenu";
 const NavbarH = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
+  const router = useRouter();
 
   const { data: session } = authClient.useSession();
 
@@ -26,18 +27,19 @@ const NavbarH = () => {
     return pathname.startsWith(href);
   };
 
-  const handleLogout = () => {
-    authClient.signOut();
+  const handleLogout = async () => {
+    await authClient.signOut();
     setOpen(false);
+    router.refresh(); // UI update after logout
+    router.push("/login");
   };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-sm">
       <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
-
         {/* Logo */}
         <Link href="/">
-          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent tracking-wide">
+          <h1 className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
             MediQueue
           </h1>
         </Link>
@@ -48,7 +50,7 @@ const NavbarH = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`text-sm font-medium transition-all duration-300 ${
+              className={`text-sm font-medium transition ${
                 isActive(item.href)
                   ? "text-purple-600"
                   : "text-gray-700 hover:text-purple-600"
@@ -67,20 +69,20 @@ const NavbarH = () => {
                 {session.user.name || session.user.email}
               </span>
 
-              <ProfileMenu />
+              <ProfileMenu handleLogout={handleLogout} />
             </>
           ) : (
             <>
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-purple-600 transition font-medium"
+                className="text-gray-700 hover:text-purple-600 font-medium"
               >
                 Login
               </Link>
 
               <Link
                 href="/signup"
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium shadow-lg hover:scale-105 transition duration-300"
+                className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium"
               >
                 Sign Up
               </Link>
@@ -103,15 +105,13 @@ const NavbarH = () => {
           open ? "max-h-[500px]" : "max-h-0"
         }`}
       >
-        <div className="px-6 pb-5 pt-2 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex flex-col gap-4">
-
-          {/* Nav Items */}
+        <div className="px-6 pb-5 pt-2 bg-white/90 border-t flex flex-col gap-4">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               onClick={() => setOpen(false)}
-              className={`text-sm font-medium transition ${
+              className={`text-sm font-medium ${
                 isActive(item.href)
                   ? "text-purple-600"
                   : "text-gray-700 hover:text-purple-600"
@@ -121,8 +121,7 @@ const NavbarH = () => {
             </Link>
           ))}
 
-          {/* Auth Section */}
-          <div className="flex flex-col gap-3 pt-3 border-t border-gray-200">
+          <div className="flex flex-col gap-3 pt-3 border-t">
             {session?.user ? (
               <>
                 <p className="text-sm text-gray-700">
@@ -136,7 +135,7 @@ const NavbarH = () => {
                 <Link
                   href="/login"
                   onClick={() => setOpen(false)}
-                  className="text-center py-2 rounded-full border border-purple-200 text-purple-600 hover:bg-purple-50 transition"
+                  className="text-center py-2 border rounded-full text-purple-600"
                 >
                   Login
                 </Link>
@@ -144,7 +143,7 @@ const NavbarH = () => {
                 <Link
                   href="/signup"
                   onClick={() => setOpen(false)}
-                  className="text-center py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white hover:opacity-90 transition"
+                  className="text-center py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white"
                 >
                   Sign Up
                 </Link>

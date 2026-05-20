@@ -67,6 +67,7 @@ export const handleBookNow = async (user, tutor) => {
 
 
 // MY TUTORS -----------------> 
+// ADD
 export const getMyTutorsByEmail = async (email) => {
   const res = await fetch(
     `http://localhost:8000/my-tutors/${email}`,
@@ -78,6 +79,31 @@ export const getMyTutorsByEmail = async (email) => {
   if (!res.ok) {
     throw new Error("Failed to fetch tutors");
   }
+
+  return res.json();
+};
+
+// DELETE 
+export const cancelById = async(id) => {
+  try {
+    const res = await fetch(`http://localhost:8000/tutors/${id}`, {
+      method: "DELETE",
+    });
+
+    const data = await res.json();
+    return data
+
+  } catch (error) {
+    console.error(error);
+  }
+}
+
+
+// MY BOOK SESSION-------------------->
+export const getMyBookByEmail = async (email) => {
+  const res = await fetch(
+    `http://localhost:8000/my-tutors/${email}`
+  );
 
   return res.json();
 };

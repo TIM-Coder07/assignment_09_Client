@@ -1,4 +1,5 @@
 import Error from "@/Component/Eror";
+import { DeleteModal } from "@/Component/ExtraFetures/DeleteModal";
 import { auth } from "@/lib/auth";
 import { getMyTutorsByEmail } from "@/lib/dataFetcing";
 import { headers } from "next/headers";
@@ -79,9 +80,8 @@ const MyTutorsPage = async () => {
                     Student: {user.name}
                   </span>
 
-                  <button className="px-4 py-2 text-sm bg-red-500 hover:bg-red-600 text-white rounded-lg transition">
-                    Cancel
-                  </button>
+                  {/* Cancle button  */}
+                  <DeleteModal tutor={tutor} user={user}></DeleteModal>
                 </div>
               </div>
             ))}
