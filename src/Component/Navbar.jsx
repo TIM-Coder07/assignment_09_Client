@@ -4,16 +4,14 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
-import { authClient } from "@/lib/auth-client"; // 👈 adjust path if needed
+import { authClient } from "@/lib/auth-client";
+import ProfileMenu from "./ProfileMenu";
 
 const NavbarH = () => {
   const [open, setOpen] = useState(false);
   const pathname = usePathname();
 
-  const {
-    data: session,
-    error,
-  } = authClient.useSession();
+  const { data: session } = authClient.useSession();
 
   const navItems = [
     { name: "Home", href: "/" },
@@ -23,7 +21,15 @@ const NavbarH = () => {
     { name: "Booked Sessions", href: "/myBooked" },
   ];
 
-  const isActive = (href) => pathname === href;
+  const isActive = (href) => {
+    if (href === "/") return pathname === "/";
+    return pathname.startsWith(href);
+  };
+
+  const handleLogout = () => {
+    authClient.signOut();
+    setOpen(false);
+  };
 
   return (
     <nav className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-sm">
@@ -42,7 +48,7 @@ const NavbarH = () => {
             <Link
               key={item.href}
               href={item.href}
-              className={`relative text-sm font-medium transition-all duration-300 ${
+              className={`text-sm font-medium transition-all duration-300 ${
                 isActive(item.href)
                   ? "text-purple-600"
                   : "text-gray-700 hover:text-purple-600"
@@ -53,7 +59,7 @@ const NavbarH = () => {
           ))}
         </div>
 
-        {/* Auth Section (SESSION ADDED) */}
+        {/* Desktop Auth */}
         <div className="hidden md:flex items-center gap-4">
           {session?.user ? (
             <>
@@ -61,12 +67,7 @@ const NavbarH = () => {
                 {session.user.name || session.user.email}
               </span>
 
-              <button
-                onClick={() => authClient.signOut()}
-                className="px-4 py-2 rounded-full bg-red-500 text-white text-sm hover:bg-red-600 transition"
-              >
-                Logout
-              </button>
+              <ProfileMenu />
             </>
           ) : (
             <>
@@ -90,7 +91,7 @@ const NavbarH = () => {
         {/* Mobile Button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-3xl text-gray-700 transition"
+          className="md:hidden text-3xl text-gray-700"
         >
           {open ? <HiX /> : <HiMenuAlt3 />}
         </button>
@@ -104,6 +105,7 @@ const NavbarH = () => {
       >
         <div className="px-6 pb-5 pt-2 bg-white/90 backdrop-blur-xl border-t border-gray-100 flex flex-col gap-4">
 
+          {/* Nav Items */}
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -119,20 +121,15 @@ const NavbarH = () => {
             </Link>
           ))}
 
+          {/* Auth Section */}
           <div className="flex flex-col gap-3 pt-3 border-t border-gray-200">
-
             {session?.user ? (
               <>
                 <p className="text-sm text-gray-700">
                   {session.user.name || session.user.email}
                 </p>
 
-                <button
-                  onClick={() => authClient.signOut()}
-                  className="py-2 rounded-full bg-red-500 text-white"
-                >
-                  Logout
-                </button>
+                <ProfileMenu handleLogout={handleLogout} />
               </>
             ) : (
               <>
@@ -153,7 +150,6 @@ const NavbarH = () => {
                 </Link>
               </>
             )}
-
           </div>
         </div>
       </div>

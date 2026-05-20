@@ -11,15 +11,21 @@ import {
   TextField,
   Description,
 } from "@heroui/react";
+import { authClient } from "@/lib/auth-client";
 
 const AddTutorPage = () => {
   const formRef = useRef(null);
-
+const { data: session } = authClient.useSession();
   const onSubmit = async (e) => {
     e.preventDefault();
-
+    
     const formData = Object.fromEntries(new FormData(e.target));
-    await postData(formData);
+    const updatedFormData = {
+    ...formData,
+    creatorEmail: session?.user?.email,
+  };
+
+    await postData(updatedFormData,);
 
     formRef.current?.reset();
   };
@@ -31,21 +37,26 @@ const AddTutorPage = () => {
         className="flex w-96 flex-col gap-4"
         onSubmit={onSubmit}
       >
+        {/* Course Title */}
+        <TextField name="courseTitle" isRequired>
+          <Label>Course Title</Label>
+          <Input placeholder="Complete Mathematics Masterclass" />
+        </TextField>
+
+        {/* Course Image */}
+        <TextField name="courseImage" isRequired>
+          <Label>Course Image URL</Label>
+          <Input placeholder="https://..." />
+          <Description>Paste image URL here</Description>
+        </TextField>
 
         {/* Tutor Name */}
         <TextField name="tutorName" isRequired>
           <Label>Tutor Name</Label>
-          <Input />
+          <Input placeholder="Rahim Uddin" />
         </TextField>
 
-        {/* Photo */}
-        <TextField name="tutorImage" isRequired>
-          <Label>Photo URL (imgbb / image link)</Label>
-          <Input />
-          <Description>Paste image URL here</Description>
-        </TextField>
-
-        {/* Subject / Category */}
+        {/* Category */}
         <TextField name="category" isRequired>
           <Label>Subject / Category</Label>
           <select name="category" className="border p-2 rounded w-full">
@@ -58,39 +69,39 @@ const AddTutorPage = () => {
           </select>
         </TextField>
 
-        {/* Availability */}
-        <TextField name="classSchedule" isRequired>
-          <Label>Available Days & Time</Label>
-          <Input placeholder="Sun - Thu 5:00 PM - 8:00 PM" />
+        {/* Description */}
+        <TextField name="description">
+          <Label>Description</Label>
+          <Input placeholder="Short course description..." />
         </TextField>
 
-        {/* Hourly Fee */}
+        {/* Schedule */}
+        <TextField name="classSchedule" isRequired>
+          <Label>Class Schedule</Label>
+          <Input placeholder="Sun - Thu, 6:00 PM - 7:30 PM" />
+        </TextField>
+
+        {/* Fee */}
         <TextField name="courseFee" isRequired>
-          <Label>Hourly Fee</Label>
+          <Label>Course Fee (৳)</Label>
           <Input type="number" />
         </TextField>
 
-        {/* Total Slot */}
+        {/* Seats */}
         <TextField name="availableSeats" isRequired>
-          <Label>Total Slot</Label>
+          <Label>Available Seats</Label>
           <Input type="number" />
         </TextField>
 
         {/* Start Date */}
         <TextField name="startDate" isRequired>
-          <Label>Session Start Date</Label>
+          <Label>Start Date</Label>
           <Input type="date" />
-        </TextField>
-
-        {/* Institution + Experience */}
-        <TextField name="institution">
-          <Label>Institution & Experience</Label>
-          <Input placeholder="Dhaka University - 4 Years" />
         </TextField>
 
         {/* Location */}
         <TextField name="location">
-          <Label>Location (Area/City)</Label>
+          <Label>Location</Label>
           <Input placeholder="Dhaka" />
         </TextField>
 
@@ -103,12 +114,6 @@ const AddTutorPage = () => {
             <option value="Offline">Offline</option>
             <option value="Both">Both</option>
           </select>
-        </TextField>
-
-        {/* Description (optional but useful) */}
-        <TextField name="description">
-          <Label>Description</Label>
-          <Input placeholder="Short course description..." />
         </TextField>
 
         {/* Buttons */}
