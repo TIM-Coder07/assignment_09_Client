@@ -9,6 +9,7 @@ import {
   Label,
   TextField,
   Card,
+  Separator,
 } from "@heroui/react";
 
 import Link from "next/link";
@@ -17,13 +18,16 @@ import { useState } from "react";
 
 import { Mail, Lock, Eye, EyeOff, UserPlus } from "lucide-react";
 import toast from "react-hot-toast";
+import { Icon } from "@iconify/react";
 
 const SignUpPage = () => {
   const router = useRouter();
 
   const [isShow, setIsShow] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [googleLoading, setGoogleLoading] = useState(false);
 
+  // EMAIL & PASSWORD SIGNUP
   const onSubmit = async (e) => {
     e.preventDefault();
 
@@ -41,7 +45,7 @@ const SignUpPage = () => {
       });
 
       if (error) {
-        toast.error(error.message || "Signup failed");
+        toast.error(error?.message || "Signup failed");
         return;
       }
 
@@ -56,6 +60,26 @@ const SignUpPage = () => {
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
+    }
+  };
+
+  // GOOGLE LOGIN
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+      });
+
+      if (error) {
+        toast.error(error?.message || "Google login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setGoogleLoading(false);
     }
   };
 
@@ -87,13 +111,16 @@ const SignUpPage = () => {
 
           {/* RIGHT SIDE */}
           <div className="p-8 md:p-12">
+            {/* HEADER */}
             <div className="mb-8">
               <h2 className="text-3xl font-bold text-white">Create Account</h2>
+
               <p className="text-gray-400 mt-2">
                 Fill in your details to register
               </p>
             </div>
 
+            {/* FORM */}
             <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
               {/* NAME */}
               <TextField>
@@ -186,7 +213,7 @@ const SignUpPage = () => {
                 <FieldError />
               </TextField>
 
-              {/* BUTTON */}
+              {/* SUBMIT BUTTON */}
               <Button
                 type="submit"
                 disabled={loading}
@@ -195,6 +222,26 @@ const SignUpPage = () => {
                 {loading ? "Creating..." : "Create Account"}
               </Button>
             </Form>
+
+            {/* DIVIDER */}
+            <Separator className="mt-6"><p>Or</p></Separator>
+
+            {/* GOOGLE BUTTON */}
+            <Button
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+              type="button"
+              className="w-full mt-6 h-12 rounded-2xl bg-white text-black font-semibold hover:bg-gray-100 transition"
+            >
+              {googleLoading ? (
+                "Signing in..."
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Icon icon="devicon:google" />
+                  Continue with Google
+                </div>
+              )}
+            </Button>
 
             {/* FOOTER */}
             <p className="text-center text-sm text-gray-400 mt-8">

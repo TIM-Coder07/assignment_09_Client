@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { getMyTutorsByEmail } from "@/lib/dataFetcing";
 import { headers } from "next/headers";
 import Image from "next/image";
+import Link from "next/link";
 
 const MyTutorsPage = async () => {
   const session = await auth.api.getSession({
@@ -26,7 +27,13 @@ const MyTutorsPage = async () => {
 
         {tutors.length === 0 ? (
           <div className="text-center py-20 bg-white rounded-xl shadow-sm border">
-            <p className="text-gray-500 text-lg">No tutors found 😢</p>
+            <p className="text-gray-500 text-lg mb-3">No tutors found 😢</p>
+            <Link
+              href="/addTutor"
+              className="px-4 py-2 my-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition"
+            >
+              Add Tutors
+            </Link>
           </div>
         ) : (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

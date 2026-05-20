@@ -3,13 +3,17 @@
 import { cancelById } from "@/lib/dataFetcing";
 import { AlertDialog, Button } from "@heroui/react";
 import toast from "react-hot-toast";
+import { useRouter } from "next/navigation";
 
 export function DeleteModal({ user, tutor }) {
+  const router = useRouter();
+
   const handleCancelButton = async () => {
     const cancelSession = await cancelById(tutor?._id);
     
     if (cancelSession?.success) {
       toast.success("Cancel Successful");
+      router.refresh(); 
     } else {
       toast.error("Failed to cancel");
     }

@@ -100,10 +100,30 @@ export const cancelById = async(id) => {
 
 
 // MY BOOK SESSION-------------------->
+// GET 
 export const getMyBookByEmail = async (email) => {
   const res = await fetch(
     `http://localhost:8000/my-tutors/${email}`
   );
 
   return res.json();
+};
+
+// PATCH  
+export const handleBookingCancel = async (id) => {
+  try {
+    const res = await fetch(`http://localhost:8000/my-bookings/${id}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    });
+
+    const data = await res.json();
+    return data;
+
+  } catch (error) {
+    console.log("Cancel error:", error);
+    return null;
+  }
 };

@@ -10,7 +10,9 @@ import {
   Label,
   TextField,
   Card,
+  Separator,
 } from "@heroui/react";
+import { Icon } from "@iconify/react";
 
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -26,52 +28,69 @@ const LogInPage = () => {
   const [loading, setLoading] = useState(false);
 
   const onSubmit = async (e) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = new FormData(e.currentTarget);
-  const userData = Object.fromEntries(formData.entries());
+    const formData = new FormData(e.currentTarget);
+    const userData = Object.fromEntries(formData.entries());
 
-  try {
-    setLoading(true);
+    try {
+      setLoading(true);
 
-    const { data, error } = await authClient.signIn.email({
-      email: userData.email,
-      password: userData.password,
-    });
+      const { data, error } = await authClient.signIn.email({
+        email: userData.email,
+        password: userData.password,
+      });
 
-    if (error) {
-      toast.error(error?.message || "Login failed");
-      return;
+      if (error) {
+        toast.error(error?.message || "Login failed");
+        return;
+      }
+
+      if (data) {
+        toast.success("Login successful");
+        router.push("/");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setLoading(false);
     }
+  };
 
-    if (data) {
-      toast.success("Login successful");
-      router.push("/");
+  // GOOGLE LOGIN
+  const [googleLoading, setGoogleLoading] = useState(false);
+
+  const handleGoogleLogin = async () => {
+    try {
+      setGoogleLoading(true);
+
+      const { error } = await authClient.signIn.social({
+        provider: "google",
+      });
+
+      if (error) {
+        toast.error(error?.message || "Google login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      toast.error("Something went wrong");
+    } finally {
+      setGoogleLoading(false);
     }
-
-  } catch (err) {
-    console.log(err);
-    toast.error("Something went wrong");
-  } finally {
-    setLoading(false);
-  }
-};
+  };
 
   return (
     <div className="relative my-5 min-h-screen overflow-hidden bg-[#070B14] flex items-center justify-center px-4 py-10">
-
       {/* BACKGROUND */}
       <div className="absolute top-[-100px] left-[-100px] w-96 h-96 bg-cyan-500/30 rounded-full blur-3xl animate-pulse" />
       <div className="absolute bottom-[-100px] right-[-100px] w-96 h-96 bg-purple-500/30 rounded-full blur-3xl animate-pulse" />
 
       {/* CARD */}
       <Card className="relative w-full max-w-5xl overflow-hidden rounded-[40px] border border-white/10 bg-white/5 backdrop-blur-2xl shadow-[0_0_60px_rgba(0,0,0,0.5)]">
-
         <div className="grid md:grid-cols-2">
-
           {/* LEFT SIDE */}
           <div className="hidden md:flex flex-col justify-between p-12 bg-gradient-to-br from-purple-500/20 via-blue-500/10 to-cyan-500/20 border-r border-white/10">
-
             <div>
               <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center border border-white/20">
                 <UserPlus className="text-purple-300" size={28} />
@@ -91,12 +110,9 @@ const LogInPage = () => {
 
           {/* RIGHT SIDE */}
           <div className="p-8 md:p-12">
-
             {/* HEADER */}
             <div className="mb-8">
-              <h2 className="text-3xl font-bold text-white">
-                Log In Account
-              </h2>
+              <h2 className="text-3xl font-bold text-white">Log In Account</h2>
 
               <p className="text-gray-400 mt-2">
                 Fill in your details to register
@@ -105,7 +121,6 @@ const LogInPage = () => {
 
             {/* FORM */}
             <Form className="flex flex-col gap-6" onSubmit={onSubmit}>
-
               {/* EMAIL */}
               <TextField name="email" isRequired>
                 <Label className="text-gray-300">Email</Label>
@@ -169,18 +184,31 @@ const LogInPage = () => {
                 {loading ? "Loging..." : "Log In"}
               </Button>
             </Form>
+            <Separator className="mt-6">Or</Separator>
+            <Button
+              onClick={handleGoogleLogin}
+              disabled={googleLoading}
+              className="w-full mt-6 h-12 rounded-2xl bg-white text-black font-semibold hover:bg-gray-100 transition"
+            >
+              {googleLoading ? (
+                "Signing in..."
+              ) : (
+                <div className="flex items-center gap-2">
+                  <Icon icon="devicon:google" />
+                  Continue with Google
+                </div>
+              )}
+            </Button>
 
             {/* FOOTER */}
             <p className="text-center text-sm text-gray-400 mt-8">
               You don`&apos;`t have an account?
-
               <Link href="/signup">
                 <span className="ml-2 text-purple-400 font-semibold">
                   sign up
                 </span>
               </Link>
             </p>
-
           </div>
         </div>
       </Card>
