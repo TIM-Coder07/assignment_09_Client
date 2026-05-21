@@ -6,6 +6,7 @@ import { usePathname, useRouter } from "next/navigation";
 import { HiMenuAlt3, HiX } from "react-icons/hi";
 import { authClient } from "@/lib/auth-client";
 import ProfileMenu from "./ProfileMenu";
+import ThemeToggle from "./ExtraFetures/ThemeToggle";
 
 const NavbarH = () => {
   const [open, setOpen] = useState(false);
@@ -22,21 +23,19 @@ const NavbarH = () => {
     { name: "Booked Sessions", href: "/myBooked" },
   ];
 
-  const isActive = (href) => {
-    if (href === "/") return pathname === "/";
-    return pathname.startsWith(href);
-  };
+  const isActive = (href) =>
+    href === "/" ? pathname === "/" : pathname.startsWith(href);
 
   const handleLogout = async () => {
     await authClient.signOut();
     setOpen(false);
-    router.refresh(); // UI update after logout
+    router.refresh();
     router.push("/login");
   };
 
   return (
-    <nav className="sticky top-0 z-50 w-full border-b border-white/20 bg-white/70 backdrop-blur-xl shadow-sm">
-      <div className="max-w-7xl mx-auto px-5 py-4 flex items-center justify-between">
+    <nav className="sticky top-0 z-50 border-b border-white/10 bg-white/70 dark:bg-gray-900/70 backdrop-blur-xl shadow-sm">
+      <div className="max-w-7xl mx-auto px-5 py-3 flex items-center justify-between">
         {/* Logo */}
         <Link href="/">
           <h1 className="text-2xl font-extrabold bg-gradient-to-r from-purple-600 to-indigo-600 bg-clip-text text-transparent">
@@ -45,15 +44,15 @@ const NavbarH = () => {
         </Link>
 
         {/* Desktop Menu */}
-        <div className="hidden md:flex items-center gap-8">
+        <div className="hidden md:flex items-center gap-6">
           {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
               className={`text-sm font-medium transition ${
                 isActive(item.href)
-                  ? "text-purple-600"
-                  : "text-gray-700 hover:text-purple-600"
+                  ? "text-purple-600 dark:text-purple-400"
+                  : "text-gray-700 dark:text-gray-300 hover:text-purple-600"
               }`}
             >
               {item.name}
@@ -61,28 +60,29 @@ const NavbarH = () => {
           ))}
         </div>
 
-        {/* Desktop Auth */}
-        <div className="hidden md:flex items-center gap-4">
+        {/* Right Actions (Desktop) */}
+        <div className="hidden md:flex items-center gap-3">
+          <ThemeToggle />
+
           {session?.user ? (
             <>
-              <span className="text-sm text-gray-700 font-medium">
+              <span className="text-sm text-gray-700 dark:text-gray-300">
                 {session.user.name || session.user.email}
               </span>
-
               <ProfileMenu handleLogout={handleLogout} />
             </>
           ) : (
             <>
               <Link
                 href="/login"
-                className="text-gray-700 hover:text-purple-600 font-medium"
+                className="text-sm text-gray-700 dark:text-gray-300 hover:text-purple-600"
               >
                 Login
               </Link>
 
               <Link
                 href="/signup"
-                className="px-5 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white font-medium"
+                className="px-4 py-2 rounded-full bg-gradient-to-r from-purple-600 to-indigo-600 text-white text-sm"
               >
                 Sign Up
               </Link>
@@ -93,7 +93,7 @@ const NavbarH = () => {
         {/* Mobile Button */}
         <button
           onClick={() => setOpen(!open)}
-          className="md:hidden text-3xl text-gray-700"
+          className="md:hidden text-3xl text-gray-700 dark:text-gray-300"
         >
           {open ? <HiX /> : <HiMenuAlt3 />}
         </button>
@@ -102,10 +102,10 @@ const NavbarH = () => {
       {/* Mobile Menu */}
       <div
         className={`md:hidden overflow-hidden transition-all duration-300 ${
-          open ? "max-h-[500px]" : "max-h-0"
+          open ? "max-h-[600px]" : "max-h-0"
         }`}
       >
-        <div className="px-6 pb-5 pt-2 bg-white/90 border-t flex flex-col gap-4">
+        <div className="px-6 pb-5 pt-4 bg-white/90 dark:bg-gray-900/90 border-t flex flex-col gap-4">
           {navItems.map((item) => (
             <Link
               key={item.href}
@@ -114,20 +114,20 @@ const NavbarH = () => {
               className={`text-sm font-medium ${
                 isActive(item.href)
                   ? "text-purple-600"
-                  : "text-gray-700 hover:text-purple-600"
+                  : "text-gray-700 dark:text-gray-300"
               }`}
             >
               {item.name}
             </Link>
           ))}
 
-          <div className="flex flex-col gap-3 pt-3 border-t">
+          {/* Theme + Auth */}
+          <div className="flex flex-col gap-3 pt-3 border-t border-gray-200 dark:border-gray-700">
             {session?.user ? (
               <>
-                <p className="text-sm text-gray-700">
+                <p className="text-sm text-gray-700 dark:text-gray-300">
                   {session.user.name || session.user.email}
                 </p>
-
                 <ProfileMenu handleLogout={handleLogout} />
               </>
             ) : (
@@ -149,6 +149,12 @@ const NavbarH = () => {
                 </Link>
               </>
             )}
+            <div className="flex justify-between items-center">
+              <span className="text-sm text-gray-600 dark:text-gray-300">
+                Theme
+              </span>
+              <ThemeToggle />
+            </div>
           </div>
         </div>
       </div>

@@ -17,17 +17,15 @@ const AvailableTutorsCard = ({ course }) => {
     <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-md border hover:shadow-xl transition duration-300 flex flex-col h-full">
       {/* Image Section */}
       <div className="w-full overflow-hidden">
-        
         <Image
-          src={course.tutorImage}
-          alt={course.tutorName}
+          src={course.tutorImage || "/default-user.png"}
+          alt={course.tutorName || "Tutor Image"}
           width={500}
           height={300}
           className="w-full h-[180px] sm:h-[220px] md:h-[240px] lg:h-[260px] object-cover hover:scale-105 transition-transform duration-500"
         />
         {/* Category Badge */}
         <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] sm:text-xs px-3 py-1 rounded-full">
-          
           {course.category}
         </span>
       </div>

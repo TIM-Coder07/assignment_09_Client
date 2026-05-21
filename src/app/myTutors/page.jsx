@@ -8,7 +8,7 @@ import Link from "next/link";
 
 const MyTutorsPage = async () => {
   const session = await auth.api.getSession({
-    headers: await headers(),
+    headers: headers(),
   });
 
   if (!session?.user) {
@@ -16,7 +16,9 @@ const MyTutorsPage = async () => {
   }
 
   const user = session.user;
-  const tutors = await getMyTutorsByEmail(user.email);
+  const token = session.session?.token;
+
+  const tutors = await getMyTutorsByEmail(user.email, token);
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
@@ -43,36 +45,29 @@ const MyTutorsPage = async () => {
                 className="bg-white rounded-2xl shadow-md hover:shadow-xl transition-all duration-300 overflow-hidden border"
               >
                 <div className="flex gap-4 p-5">
-                  {/* Image */}
-                  <div className="shrink-0">
-                    <Image
-                      src={tutor?.courseImage}
-                      alt={tutor.courseTitle}
-                      height={90}
-                      width={90}
-                      className="rounded-xl object-cover"
-                    />
-                  </div>
+                  <Image
+                    src={tutor?.courseImage}
+                    alt={tutor.courseTitle}
+                    height={90}
+                    width={90}
+                    className="rounded-xl object-cover"
+                  />
 
-                  {/* Content */}
                   <div className="flex-1 space-y-1">
                     <h2 className="text-xl font-semibold text-gray-800">
                       {tutor.courseTitle}
                     </h2>
 
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium">Tutor:</span>{" "}
-                      {tutor.tutorName}
+                      Tutor: {tutor.tutorName}
                     </p>
 
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium">Schedule:</span>{" "}
-                      {tutor.classSchedule}
+                      Schedule: {tutor.classSchedule}
                     </p>
 
                     <p className="text-sm text-gray-600">
-                      <span className="font-medium">Category:</span>{" "}
-                      {tutor.category}
+                      Category: {tutor.category}
                     </p>
 
                     <div className="pt-2 text-xs text-gray-400">
@@ -81,14 +76,12 @@ const MyTutorsPage = async () => {
                   </div>
                 </div>
 
-                {/* Actions */}
                 <div className="flex justify-between items-center px-5 py-4 bg-gray-50 border-t">
                   <span className="text-xs text-gray-500">
                     Student: {user.name}
                   </span>
 
-                  {/* Cancle button  */}
-                  <DeleteModal tutor={tutor} user={user}></DeleteModal>
+                  <DeleteModal tutor={tutor} user={user} />
                 </div>
               </div>
             ))}

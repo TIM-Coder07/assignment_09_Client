@@ -10,17 +10,17 @@ export const postData = async (data) => {
     body: JSON.stringify(data),
   });
   const result = await res.json();
-  return result
+  return result;
 };
 
 // GET (HOME)---------------->
 export const homeData = async () => {
-    const res = await fetch('http://localhost:8000/');
-    const data = await res.json()
-    return data
-}
+  const res = await fetch("http://localhost:8000/");
+  const data = await res.json();
+  return data;
+};
 
-//GET TUTORS 
+//GET TUTORS
 export const getTutors = async () => {
   const res = await fetch("http://localhost:8000/courses", {
     cache: "no-store",
@@ -28,7 +28,6 @@ export const getTutors = async () => {
 
   return res.json();
 };
-
 
 // GET TUTORS DETAILS ---------->
 export const getDetailsById = async (tutorId) => {
@@ -45,16 +44,13 @@ export const handleBookNow = async (user, tutor) => {
     studentEmail: user.email,
   };
 
-  const res = await fetch(
-    `http://localhost:8000/book-session/${tutor._id}`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(bookingInfo),
-    }
-  );
+  const res = await fetch(`http://localhost:8000/book-session/${tutor._id}`, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(bookingInfo),
+  });
 
   const data = await res.json();
 
@@ -65,16 +61,17 @@ export const handleBookNow = async (user, tutor) => {
   }
 };
 
-
-// MY TUTORS -----------------> 
+// MY TUTORS ----------------->
+// JWT
 // ADD
-export const getMyTutorsByEmail = async (email) => {
-  const res = await fetch(
-    `http://localhost:8000/my-tutors/${email}`,
-    {
-      cache: "no-store",
-    }
-  );
+export const getMyTutorsByEmail = async (email, token) => {
+  console.log('TOKEN', token);
+  const res = await fetch(`http://localhost:8000/my-tutors/${email}`, {
+    cache: "no-store",
+    headers: {
+      authorization:  `Bearer ${token}`,
+    },
+  });
 
   if (!res.ok) {
     throw new Error("Failed to fetch tutors");
@@ -83,47 +80,38 @@ export const getMyTutorsByEmail = async (email) => {
   return res.json();
 };
 
-// DELETE 
-export const cancelById = async(id) => {
+// DELETE
+export const cancelById = async (id) => {
   try {
     const res = await fetch(`http://localhost:8000/tutors/${id}`, {
       method: "DELETE",
     });
 
     const data = await res.json();
-    return data
-
+    return data;
   } catch (error) {
     console.error(error);
   }
-}
-
+};
 
 // MY BOOK SESSION-------------------->
-// GET 
+// GET
 export const getMyBookByEmail = async (email) => {
-  const res = await fetch(
-    `http://localhost:8000/my-tutors/${email}`
-  );
+  const res = await fetch(`http://localhost:8000/my-bookings/${email}`, {
+    cache: "no-store",
+  });
 
   return res.json();
 };
 
-// PATCH  
+// PATCH
 export const handleBookingCancel = async (id) => {
-  try {
-    const res = await fetch(`http://localhost:8000/my-bookings/${id}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
+  const res = await fetch(`http://localhost:8000/my-bookings/${id}`, {
+    method: "PATCH",
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 
-    const data = await res.json();
-    return data;
-
-  } catch (error) {
-    console.log("Cancel error:", error);
-    return null;
-  }
+  return res.json();
 };
