@@ -10,11 +10,12 @@ const MyBooked = async () => {
   });
 
   if (!session?.user) {
-    return <Error />;
+    return <Error message="Unauthorized access" />;
   }
 
   const user = session.user;
-  const myBooks = await getMyBookByEmail(user.email);
+
+  const myBooks = (await getMyBookByEmail(user.email)) || [];
 
   return (
     <div>

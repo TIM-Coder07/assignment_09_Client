@@ -1,3 +1,4 @@
+import AboutPage from "@/Component/AboutPage";
 import AvailableTutors from "@/Component/AvailableTutors";
 import Banner from "@/Component/Banner/Banner";
 import Collaboration from "@/Component/Collaboration";
@@ -15,6 +16,10 @@ export default function Home() {
 
       <section>
         <Collaboration />
+      </section>
+
+      <section>
+        <AboutPage></AboutPage>
       </section>
     </div>
   );

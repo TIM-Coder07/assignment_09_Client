@@ -73,17 +73,25 @@ const AddTutorPage = () => {
           </TextField>
 
           {/* Category */}
-          <TextField name="category" isRequired>
+          <div>
             <Label>Subject / Category</Label>
-            <select className="border p-2 rounded w-full">
-              <option value="">Select Subject</option>
+
+            <select
+              name="category"
+              className="border p-2 rounded w-full"
+              defaultValue=""
+              required
+            >
+              <option value="" disabled>
+                Select Subject
+              </option>
               <option value="Mathematics">Mathematics</option>
               <option value="Physics">Physics</option>
               <option value="Chemistry">Chemistry</option>
               <option value="Biology">Biology</option>
               <option value="English">English</option>
             </select>
-          </TextField>
+          </div>
 
           {/* Description */}
           <TextField name="description">
@@ -124,10 +132,17 @@ const AddTutorPage = () => {
           </div>
 
           {/* Teaching Mode */}
-          <TextField name="teachingMode" isRequired>
+          <TextField isRequired>
             <Label>Teaching Mode</Label>
-            <select className="border p-2 rounded w-full">
-              <option value="">Select mode</option>
+
+            <select
+              name="teachingMode"
+              className="border p-2 rounded w-full"
+              defaultValue=""
+            >
+              <option value="" disabled>
+                Select mode
+              </option>
               <option value="Online">Online</option>
               <option value="Offline">Offline</option>
               <option value="Both">Both</option>

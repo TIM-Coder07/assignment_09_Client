@@ -20,9 +20,15 @@ export const homeData = async () => {
   return data;
 };
 
-//GET TUTORS
-export const getTutors = async () => {
-  const res = await fetch("http://localhost:8000/courses", {
+//GET ALL TUTORS
+export const getTutors = async ({ search = "", startDate = "", endDate = "" } = {}) => {
+  const query = new URLSearchParams();
+
+  if (search) query.append("search", search);
+  if (startDate) query.append("startDate", startDate);
+  if (endDate) query.append("endDate", endDate);
+
+  const res = await fetch(`http://localhost:8000/courses?${query.toString()}`, {
     cache: "no-store",
   });
 
@@ -37,7 +43,7 @@ export const getDetailsById = async (tutorId) => {
   return res.json();
 };
 
-// HANDEL BOOK NOW BUTTON ------------->
+// HANDEL BOOK NOW BUTTON FOR BOOK-SESSION ------------->
 export const handleBookNow = async (user, tutor) => {
   const bookingInfo = {
     studentName: user.displayName,
@@ -65,14 +71,15 @@ export const handleBookNow = async (user, tutor) => {
 // JWT
 // ADD
 export const getMyTutorsByEmail = async (email, token) => {
-  console.log('TOKEN', token);
   const res = await fetch(`http://localhost:8000/my-tutors/${email}`, {
     cache: "no-store",
     headers: {
-      authorization:  `Bearer ${token}`,
+      Authorization:  `Bearer ${token}`,
     },
+    
+    
   });
-
+  console.log('res', res)
   if (!res.ok) {
     throw new Error("Failed to fetch tutors");
   }
@@ -95,23 +102,45 @@ export const cancelById = async (id) => {
 };
 
 // MY BOOK SESSION-------------------->
-// GET
+// GET bookings by email
 export const getMyBookByEmail = async (email) => {
-  const res = await fetch(`http://localhost:8000/my-bookings/${email}`, {
-    cache: "no-store",
-  });
+  try {
+    const res = await fetch(
+      `http://localhost:8000/my-bookings/email/${email}`,
+      {
+        cache: "no-store",
+      }
+    );
 
-  return res.json();
+    if (!res.ok) {
+      throw new Error("Failed to fetch bookings");
+    }
+
+    return await res.json();
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
 };
 
-// PATCH
+// PATCH cancel booking
 export const handleBookingCancel = async (id) => {
-  const res = await fetch(`http://localhost:8000/my-bookings/${id}`, {
-    method: "PATCH",
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  try {
+    const res = await fetch(
+      `http://localhost:8000/my-bookings/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      }
+    );
 
-  return res.json();
+    if (!res.ok) {
+      throw new Error("Failed to cancel booking");
+    }
+
+    return await res.json();
+  } catch (error) {
+    return { success: false, message: error.message };
+  }
 };

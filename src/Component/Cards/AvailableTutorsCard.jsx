@@ -14,92 +14,96 @@ import {
 
 const AvailableTutorsCard = ({ course }) => {
   return (
-    <div className="bg-white rounded-xl sm:rounded-2xl overflow-hidden shadow-md border hover:shadow-xl transition duration-300 flex flex-col h-full">
+    <div className="bg-white rounded-2xl overflow-hidden shadow-md border hover:shadow-xl transition-all duration-300 flex flex-col h-full">
       {/* Image Section */}
-      <div className="w-full overflow-hidden">
+      <div className="relative w-full overflow-hidden">
         <Image
-          src={course.tutorImage || "/default-user.png"}
-          alt={course.tutorName || "Tutor Image"}
-          width={500}
-          height={300}
-          className="w-full h-[180px] sm:h-[220px] md:h-[240px] lg:h-[260px] object-cover hover:scale-105 transition-transform duration-500"
+          src={course.courseImage || "/default-course.jpg"}
+          alt={course.courseTitle || "Course Image"}
+          width={600}
+          height={400}
+          className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover hover:scale-105 transition-transform duration-500"
         />
+
         {/* Category Badge */}
-        <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] sm:text-xs px-3 py-1 rounded-full">
+        <span className="absolute top-3 left-3 bg-blue-600 text-white text-[11px] sm:text-xs px-3 py-1 rounded-full shadow">
           {course.category}
         </span>
       </div>
+
       {/* Content */}
-      <div className="p-3 sm:p-4 md:p-5 space-y-3 flex flex-col flex-1">
+      <div className="p-4 sm:p-5 flex flex-col flex-1 space-y-4">
         {/* Title */}
-        <h2 className="text-sm sm:text-base md:text-lg lg:text-xl font-bold text-gray-800 leading-snug line-clamp-2">
+        <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 leading-snug line-clamp-2">
           {course.courseTitle}
         </h2>
 
         {/* Tutor */}
-        <p className="text-xs sm:text-sm text-gray-500">
-          Instructor:
-          <span className="font-semibold text-black">{course.tutorName}</span>
+        <p className="text-sm text-gray-500">
+          Instructor:{" "}
+          <span className="font-semibold text-gray-800">
+            {course.tutorName}
+          </span>
         </p>
 
         {/* Description */}
-        <p className="text-xs sm:text-sm text-gray-600 line-clamp-2">
+        <p className="text-sm text-gray-600 line-clamp-3">
           {course.description}
         </p>
 
         {/* Course Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm pt-2">
+        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
           <div className="flex items-center gap-2 text-gray-700">
             <FaClock className="text-blue-500 shrink-0" />
-            {course.courseDuration}
+            <span>{course.courseDuration || "N/A"}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700">
             <FaBookOpen className="text-green-500 shrink-0" />
-            {course.totalClasses} Classes
+            <span>{course.totalClasses || 0} Classes</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700">
-            <FaMoneyBillWave className="text-yellow-500 shrink-0" />৳
-            {course.courseFee}
+            <FaMoneyBillWave className="text-yellow-500 shrink-0" />
+            <span>৳ {course.courseFee}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700">
             <FaUsers className="text-pink-500 shrink-0" />
-            {course.availableSeats} Seats
+            <span>{course.availableSeats} Seats</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaCalendarAlt className="text-red-500 shrink-0" />
-            Starts: {course.startDate}
+            <span>Starts: {course.startDate}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaUniversity className="text-indigo-500 shrink-0" />
-            {course.institution}
+            <span>{course.institution || "Unknown Institution"}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaMapMarkerAlt className="text-orange-500 shrink-0" />
-            {course.location}
+            <span>{course.location}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaLaptopHouse className="text-cyan-500 shrink-0" />
-            {course.teachingMode}
+            <span>{course.teachingMode}</span>
           </div>
         </div>
 
         {/* Schedule */}
-        <div className="bg-gray-100 rounded-lg p-2 text-xs sm:text-sm text-gray-700">
-          <span className="font-semibold">Schedule:</span>
+        <div className="bg-gray-100 rounded-lg p-3 text-sm text-gray-700">
+          <span className="font-semibold">Schedule:</span>{" "}
           {course.classSchedule}
         </div>
 
         {/* Button */}
         <div className="mt-auto pt-2">
           <Link href="/tutors">
-            <button className="w-full bg-black hover:bg-gray-800 text-white py-2 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition active:scale-[0.98]">
+            <button className="w-full bg-black hover:bg-gray-800 text-white py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-transform duration-200 active:scale-[0.98]">
               Enroll Now
             </button>
           </Link>

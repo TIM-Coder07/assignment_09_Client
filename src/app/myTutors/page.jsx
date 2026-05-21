@@ -8,7 +8,10 @@ import Link from "next/link";
 
 const MyTutorsPage = async () => {
   const session = await auth.api.getSession({
-    headers: headers(),
+    headers: await headers(),
+  });
+  const getToken = await auth.api.getToken({
+    headers: await headers(),
   });
 
   if (!session?.user) {
@@ -16,7 +19,9 @@ const MyTutorsPage = async () => {
   }
 
   const user = session.user;
-  const token = session.session?.token;
+  const token = getToken?.token;
+  console.log('token', token);
+  
 
   const tutors = await getMyTutorsByEmail(user.email, token);
 
