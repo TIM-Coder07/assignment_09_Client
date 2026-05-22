@@ -28,7 +28,6 @@ const MyBookCard = ({ myBooks = [], user }) => {
       }
     } catch (error) {
       toast.error("Something went wrong");
-      console.log(error);
     }
   };
 

@@ -1,108 +1,113 @@
 "use client";
 
-import { Mail, Send } from "lucide-react";
-import { Button, Input, Label, Modal, Surface, TextField } from "@heroui/react";
-import { handleBookNow } from "@/lib/dataFetcing";
 import { useRouter } from "next/navigation";
+import { useState } from "react";
+import { Button, Input, Label, TextField, Modal, Surface } from "@heroui/react";
+import { Mail, Send } from "lucide-react";
+import { handleBookNow } from "@/lib/dataFetcing";
+import { toast } from "react-hot-toast";
 
 export function ModalForm({ user, tutorDetails }) {
-  const { email } = user;
-  const { tutorName, category } = tutorDetails;
   const router = useRouter();
+  const [loading, setLoading] = useState(false);
 
+  // If user not logged in
+  if (!user) {
+    return (
+      <Button onClick={() => toast.error("Please login first")}>
+        Book Session
+      </Button>
+    );
+  }
 
-  const handelBooking = (e) => {
+  const handelBooking = async (e) => {
     e.preventDefault();
-    handleBookNow(user, tutorDetails);
-      router.refresh(); 
+
+    setLoading(true);
+
+    const bookingData = {
+      studentName: user.displayName,
+      studentEmail: user.email,
+    };
+
+    const result = await handleBookNow(user, tutorDetails);
+
+    setLoading(false);
+
+    if (result?.success) {
+      toast.success(result.message || "Booking successful");
+
+      // IMPORTANT FIX → go to MyBooked page
+      router.push("/myBooked");
+
+      // refresh data
+      router.refresh();
+    } else {
+      toast.error(result?.message || "Booking failed");
+    }
   };
 
   return (
     <Modal>
-      {/* TRIGGER BUTTON */}
-      <Button className=" text-white font-semibold px-6 py-2 rounded-xl shadow-lg hover:scale-105 transition">
+      <Button className="text-white px-6 py-2 rounded-xl">
         Book Session
       </Button>
 
-      <Modal.Backdrop className="bg-black/50 backdrop-blur-sm">
-        <Modal.Container placement="center">
-          <Modal.Dialog className="sm:max-w-lg rounded-3xl overflow-hidden bg-white/10 backdrop-blur-2xl border border-white/20 shadow-2xl">
-            <Modal.CloseTrigger />
+      <Modal.Backdrop>
+        <Modal.Container>
+          <Modal.Dialog>
 
-            {/* HEADER */}
-            <Modal.Header className="p-6 border-b border-white/10">
-              <Modal.Icon className="bg-white/10 text-cyan-300 rounded-xl p-3">
-                <Mail className="size-6" />
+            <Modal.Header>
+              <Modal.Icon>
+                <Mail />
               </Modal.Icon>
 
-              <Modal.Heading className="text-white text-2xl font-bold mt-3">
+              <Modal.Heading>
                 Book Your Session
               </Modal.Heading>
-
-              <p className="mt-2 text-sm text-gray-300">
-                Fill up the form below to schedule your tutoring session.
-              </p>
             </Modal.Header>
 
-            {/* BODY */}
-            <Modal.Body className="p-6">
-              <Surface className="bg-transparent">
+            <Modal.Body>
+              <Surface>
                 <form className="flex flex-col gap-4">
+
                   <TextField name="name">
-                    <Label className="text-gray-300">Name</Label>
-                    <Input className="h-12 rounded-xl bg-white/5 border border-white/10 text-white" />
+                    <Label>Name</Label>
+                    <Input defaultValue={user?.displayName} />
                   </TextField>
+
                   <TextField name="email">
-                    <Label className="text-gray-300">Email</Label>
-                    <Input
-                      value={email}
-                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
-                    />
+                    <Label>Email</Label>
+                    <Input value={user?.email} readOnly />
                   </TextField>
+
                   <TextField name="phone">
-                    <Label className="text-gray-300">Phone</Label>
-                    <Input className="h-12 rounded-xl bg-white/5 border border-white/10 text-white" />
+                    <Label>Phone</Label>
+                    <Input placeholder="01XXXXXXXXX" />
                   </TextField>
 
-                  {/* tutor Name */}
-                  <TextField name="tutorName">
-                    <Label className="text-gray-300">Tutor Name</Label>
-                    <Input
-                      value={tutorName}
-                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
-                    />
+                  <TextField name="tutor">
+                    <Label>Tutor</Label>
+                    <Input value={tutorDetails.tutorName} readOnly />
                   </TextField>
 
-                  {/* subject */}
                   <TextField name="subject">
-                    <Label className="text-gray-300">Subject</Label>
-                    <Input
-                      value={category}
-                      className="h-12 rounded-xl bg-white/5 border border-white/10 text-white"
-                    />
+                    <Label>Subject</Label>
+                    <Input value={tutorDetails.category} readOnly />
                   </TextField>
+
+                  <Button
+                    onClick={handelBooking}
+                    disabled={loading}
+                  >
+                    <Send className="mr-2" />
+                    {loading ? "Booking..." : "Book Now"}
+                  </Button>
+
                 </form>
               </Surface>
             </Modal.Body>
 
-            {/* FOOTER */}
-            <Modal.Footer className="p-6 border-t border-white/10 flex gap-3">
-              <Button
-                slot="close"
-                className="flex-1 bg-white/10 text-white hover:bg-white/20 rounded-xl"
-              >
-                Cancel
-              </Button>
-
-              <Button
-                onClick={handelBooking}
-                slot="close"
-                className="flex-1  text-white rounded-xl font-semibold shadow-lg hover:scale-105 transition"
-              >
-                <Send className="size-4 mr-2" />
-                Book
-              </Button>
-            </Modal.Footer>
           </Modal.Dialog>
         </Modal.Container>
       </Modal.Backdrop>

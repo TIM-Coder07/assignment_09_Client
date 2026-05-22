@@ -50,7 +50,6 @@ const LogInPage = () => {
         router.push("/");
       }
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong");
     } finally {
       setLoading(false);
@@ -72,7 +71,6 @@ const LogInPage = () => {
         toast.error(error?.message || "Google login failed");
       }
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong");
     } finally {
       setGoogleLoading(false);

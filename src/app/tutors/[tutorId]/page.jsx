@@ -5,7 +5,6 @@ import { headers } from "next/headers";
 
 const DetailsPage = async ({ params }) => {
   const { tutorId } = await params;
-  console.log("tutorId", tutorId);
   
 
   const tutorDetails = await getDetailsById(tutorId);

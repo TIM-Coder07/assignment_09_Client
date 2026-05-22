@@ -20,8 +20,6 @@ const MyTutorsPage = async () => {
 
   const user = session.user;
   const token = getToken?.token;
-  console.log('token', token);
-  
 
   const tutors = await getMyTutorsByEmail(user.email, token);
 

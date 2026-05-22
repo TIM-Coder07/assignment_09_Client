@@ -76,7 +76,6 @@ const SignUpPage = () => {
         toast.error(error?.message || "Google login failed");
       }
     } catch (err) {
-      console.log(err);
       toast.error("Something went wrong");
     } finally {
       setGoogleLoading(false);

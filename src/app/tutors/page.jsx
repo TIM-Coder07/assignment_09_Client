@@ -8,9 +8,14 @@ import { SearchInputField } from "@/Component/ExtraFetures/SearchInputField";
 const TutorsPage = () => {
   const [tutorsData, setTutorsData] = useState([]);
   const [search, setSearch] = useState("");
-  console.log("search", search);
-
   const [debouncedSearch, setDebouncedSearch] = useState("");
+
+  const [filter, setFilter] = useState({
+    startDate: "",
+    endDate: "",
+  });
+
+  // debounce
   useEffect(() => {
     const timer = setTimeout(() => {
       setDebouncedSearch(search);
@@ -19,21 +24,16 @@ const TutorsPage = () => {
     return () => clearTimeout(timer);
   }, [search]);
 
-  const [filter, setFilter] = useState({
-    startDate: "",
-    endDate: '',
-  });
-
   const fetchTutors = async () => {
     const params = new URLSearchParams();
 
-    if (search) params.append("search", search);
+    if (debouncedSearch) params.append("search", debouncedSearch);
     if (filter.startDate) params.append("startDate", filter.startDate);
     if (filter.endDate) params.append("endDate", filter.endDate);
 
     const res = await fetch(
       `http://localhost:8000/courses?${params.toString()}`,
-      { cache: "no-store" },
+      { cache: "no-store" }
     );
 
     const data = await res.json();
@@ -42,13 +42,13 @@ const TutorsPage = () => {
 
   useEffect(() => {
     fetchTutors();
-  }, [ debouncedSearch, filter ]);
+  }, [debouncedSearch, filter]);
 
   return (
     <>
-      {/* Search + Filter */}
+      {/* SEARCH + FILTER */}
       <div className="w-full flex justify-center px-4 pt-6">
-        <div className="w-full flex items-center justify-center max-w-2xl gap-3">
+        <div className="w-full max-w-2xl flex flex-col sm:flex-row gap-3">
           <SearchInputField
             value={search}
             onChange={(e) => setSearch(e.target.value)}
@@ -58,8 +58,8 @@ const TutorsPage = () => {
         </div>
       </div>
 
-      {/* Grid */}
-      <div className="max-w-7xl mx-auto px-6 py-8">
+      {/* GRID */}
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
           {tutorsData.map((tutor) => (
             <AllTutorsCard key={tutor._id} course={tutor} />

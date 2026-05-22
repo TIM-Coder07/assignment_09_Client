@@ -35,8 +35,7 @@ const AddTutorPage = () => {
 
       formRef.current?.reset();
     } catch (error) {
-      console.log(error);
-      toast.error("❌ Failed to add tutor");
+      toast.error(" Failed to add tutor");
     }
   };
 

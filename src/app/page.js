@@ -5,22 +5,16 @@ import Collaboration from "@/Component/Collaboration";
 
 export default function Home() {
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-10">
+    <main className="w-full">
       <section>
         <Banner />
       </section>
 
-      <section>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 space-y-14 py-10">
         <AvailableTutors />
-      </section>
-
-      <section>
         <Collaboration />
-      </section>
-
-      <section>
-        <AboutPage></AboutPage>
-      </section>
-    </div>
+        <AboutPage />
+      </div>
+    </main>
   );
 }

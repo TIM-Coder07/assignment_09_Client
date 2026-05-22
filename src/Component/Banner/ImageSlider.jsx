@@ -30,47 +30,42 @@ export default function ImageSlider() {
   ];
 
   return (
-    <div className="w-full max-w-6xl mx-auto px-3 sm:px-6 lg:px-8">
+    <div className="w-full max-w-6xl mx-auto px-2 sm:px-4 lg:px-6">
       <Swiper
         modules={[Navigation, Pagination, Autoplay]}
-        spaceBetween={16}
+        spaceBetween={20}
         slidesPerView={1}
         navigation
         pagination={{ clickable: true }}
         autoplay={{ delay: 3000, disableOnInteraction: false }}
-        loop={true}
+        loop
         className="rounded-xl overflow-hidden"
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            {/* RESPONSIVE HEIGHT WRAPPER */}
-            <div className="relative w-full h-[220px] sm:h-[320px] md:h-[420px] lg:h-[520px]">
-              
+            {/* RESPONSIVE ASPECT RATIO (IMPORTANT FIX) */}
+            <div className="relative w-full aspect-[16/9] sm:aspect-[16/7]">
               <Image
                 src={slide.img}
                 alt={slide.title}
                 fill
                 priority
-                sizes=" (max-width: 640px) 100vw, (max-width: 1024px) 100vw, 1200px "
-                className="object-cover object-center"
+                className="object-cover"
               />
+
               {/* Overlay */}
               <div className="absolute inset-0 bg-black/50 flex items-end">
-                
-                <div className="text-white px-4 sm:px-6 md:px-10 pb-5 sm:pb-10 max-w-2xl">
-                  
-                  <h2 className="text-base sm:text-xl md:text-3xl font-bold mb-2 sm:mb-3">
-                    
+                <div className="text-white px-4 sm:px-8 pb-6 sm:pb-10 max-w-2xl">
+                  <h2 className="text-lg sm:text-2xl md:text-4xl font-bold mb-2">
                     {slide.title}
                   </h2>
-                  <p className="text-xs sm:text-sm md:text-base opacity-90 mb-3 sm:mb-5">
-                    
+
+                  <p className="text-sm sm:text-base md:text-lg opacity-90 mb-4">
                     {slide.desc}
                   </p>
+
                   <Link href="/tutors">
-                    
-                    <button className="bg-blue-600 hover:bg-blue-700 text-xs sm:text-sm md:text-base px-4 sm:px-5 py-2 rounded-lg transition active:scale-95">
-                      
+                    <button className="bg-blue-600 hover:bg-blue-700 text-sm sm:text-base px-4 sm:px-6 py-2 rounded-lg transition active:scale-95">
                       Tutors Page
                     </button>
                   </Link>

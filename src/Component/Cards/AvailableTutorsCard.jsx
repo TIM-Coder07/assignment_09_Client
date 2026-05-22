@@ -15,31 +15,32 @@ import {
 const AvailableTutorsCard = ({ course }) => {
   return (
     <div className="bg-white rounded-2xl overflow-hidden shadow-md border hover:shadow-xl transition-all duration-300 flex flex-col h-full">
-      {/* Image Section */}
-      <div className="relative w-full overflow-hidden">
+
+      {/* Image */}
+      <div className="relative w-full">
         <Image
           src={course.courseImage || "/default-course.jpg"}
           alt={course.courseTitle || "Course Image"}
           width={600}
           height={400}
-          className="w-full h-48 sm:h-56 md:h-60 lg:h-64 object-cover hover:scale-105 transition-transform duration-500"
+          className="w-full h-44 sm:h-52 md:h-60 lg:h-64 object-cover hover:scale-105 transition-transform duration-500"
         />
 
-        {/* Category Badge */}
-        <span className="absolute top-3 left-3 bg-blue-600 text-white text-[11px] sm:text-xs px-3 py-1 rounded-full shadow">
+        <span className="absolute top-3 left-3 bg-blue-600 text-white text-[10px] sm:text-xs px-2 sm:px-3 py-1 rounded-full shadow">
           {course.category}
         </span>
       </div>
 
       {/* Content */}
-      <div className="p-4 sm:p-5 flex flex-col flex-1 space-y-4">
+      <div className="p-4 sm:p-5 flex flex-col flex-1 space-y-3 sm:space-y-4">
+
         {/* Title */}
         <h2 className="text-base sm:text-lg md:text-xl font-bold text-gray-800 leading-snug line-clamp-2">
           {course.courseTitle}
         </h2>
 
         {/* Tutor */}
-        <p className="text-sm text-gray-500">
+        <p className="text-xs sm:text-sm text-gray-500">
           Instructor:{" "}
           <span className="font-semibold text-gray-800">
             {course.tutorName}
@@ -47,15 +48,16 @@ const AvailableTutorsCard = ({ course }) => {
         </p>
 
         {/* Description */}
-        <p className="text-sm text-gray-600 line-clamp-3">
+        <p className="text-xs sm:text-sm text-gray-600 line-clamp-3">
           {course.description}
         </p>
 
-        {/* Course Info */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+        {/* Info Grid */}
+        <div className="grid grid-cols-1 xs:grid-cols-2 gap-2 sm:gap-3 text-xs sm:text-sm">
+
           <div className="flex items-center gap-2 text-gray-700">
             <FaClock className="text-blue-500 shrink-0" />
-            <span>{course.courseDuration || "N/A"}</span>
+            <span className="break-words">{course.courseDuration || "N/A"}</span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700">
@@ -75,39 +77,47 @@ const AvailableTutorsCard = ({ course }) => {
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaCalendarAlt className="text-red-500 shrink-0" />
-            <span>Starts: {course.startDate}</span>
+            <span className="break-words">
+              Starts: {course.startDate}
+            </span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaUniversity className="text-indigo-500 shrink-0" />
-            <span>{course.institution || "Unknown Institution"}</span>
+            <span className="break-words">
+              {course.institution || "Unknown Institution"}
+            </span>
           </div>
 
-          <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
-            <FaMapMarkerAlt className="text-orange-500 shrink-0" />
-            <span>{course.location}</span>
+          <div className="flex items-start gap-2 text-gray-700 sm:col-span-2">
+            <FaMapMarkerAlt className="text-orange-500 shrink-0 mt-0.5" />
+            <span className="break-words">
+              {course.location}
+            </span>
           </div>
 
           <div className="flex items-center gap-2 text-gray-700 sm:col-span-2">
             <FaLaptopHouse className="text-cyan-500 shrink-0" />
             <span>{course.teachingMode}</span>
           </div>
+
         </div>
 
         {/* Schedule */}
-        <div className="bg-gray-100 rounded-lg p-3 text-sm text-gray-700">
+        <div className="bg-gray-100 rounded-lg p-2 sm:p-3 text-xs sm:text-sm text-gray-700">
           <span className="font-semibold">Schedule:</span>{" "}
-          {course.classSchedule}
+          <span className="break-words">{course.classSchedule}</span>
         </div>
 
         {/* Button */}
         <div className="mt-auto pt-2">
           <Link href="/tutors">
-            <button className="w-full bg-black hover:bg-gray-800 text-white py-2.5 sm:py-3 rounded-lg font-semibold text-sm sm:text-base transition-transform duration-200 active:scale-[0.98]">
+            <button className="w-full bg-black hover:bg-gray-800 text-white py-2 sm:py-3 rounded-lg font-semibold text-sm transition active:scale-[0.98]">
               Enroll Now
             </button>
           </Link>
         </div>
+
       </div>
     </div>
   );

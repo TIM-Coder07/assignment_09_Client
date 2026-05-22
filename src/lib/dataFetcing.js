@@ -2,7 +2,7 @@ import toast from "react-hot-toast";
 
 // POST ----------------
 export const postData = async (data) => {
-  const res = await fetch("http://localhost:8000/courses", {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/courses`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -15,71 +15,87 @@ export const postData = async (data) => {
 
 // GET (HOME)---------------->
 export const homeData = async () => {
-  const res = await fetch("http://localhost:8000/");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`);
   const data = await res.json();
   return data;
 };
 
 //GET ALL TUTORS
-export const getTutors = async ({ search = "", startDate = "", endDate = "" } = {}) => {
+export const getTutors = async ({
+  search = "",
+  startDate = "",
+  endDate = "",
+} = {}) => {
   const query = new URLSearchParams();
 
   if (search) query.append("search", search);
   if (startDate) query.append("startDate", startDate);
   if (endDate) query.append("endDate", endDate);
 
-  const res = await fetch(`http://localhost:8000/courses?${query.toString()}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/courses?${query.toString()}`,
+    {
+      cache: "no-store",
+    },
+  );
 
   return res.json();
 };
 
 // GET TUTORS DETAILS ---------->
 export const getDetailsById = async (tutorId) => {
-  const res = await fetch(`http://localhost:8000/courses/${tutorId}`, {
-    cache: "no-store",
-  });
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/courses/${tutorId}`,
+    {
+      cache: "no-store",
+    },
+  );
   return res.json();
 };
 
-// HANDEL BOOK NOW BUTTON FOR BOOK-SESSION ------------->
+// HANDEL BOOK NOW BUTTON ADD FOR BOOK-SESSION ------------->
 export const handleBookNow = async (user, tutor) => {
-  const bookingInfo = {
-    studentName: user.displayName,
-    studentEmail: user.email,
-  };
+  try {
+    const bookingInfo = {
+      studentName: user?.displayName,
+      studentEmail: user?.email,
+    };
 
-  const res = await fetch(`http://localhost:8000/book-session/${tutor._id}`, {
-    method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(bookingInfo),
-  });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/book-session/${tutor._id}`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(bookingInfo),
+      }
+    );
 
-  const data = await res.json();
+    const data = await res.json();
 
-  if (data.success) {
-    toast.success(data.message);
-  } else {
-    toast.error(data.message);
+    return data;
+  } catch (error) {
+    return {
+      success: false,
+      message: error.message || "Something went wrong",
+    };
   }
 };
 
 // MY TUTORS ----------------->
-// JWT
-// ADD
+// ADD=====>
 export const getMyTutorsByEmail = async (email, token) => {
-  const res = await fetch(`http://localhost:8000/my-tutors/${email}`, {
-    cache: "no-store",
-    headers: {
-      Authorization:  `Bearer ${token}`,
+  const res = await fetch(
+    `${process.env.NEXT_PUBLIC_SERVER_URL}/my-tutors/${email}`,
+    {
+      cache: "no-store",
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
     },
-    
-    
-  });
-  console.log('res', res)
+  );
+  console.log("res", res);
   if (!res.ok) {
     throw new Error("Failed to fetch tutors");
   }
@@ -90,9 +106,12 @@ export const getMyTutorsByEmail = async (email, token) => {
 // DELETE
 export const cancelById = async (id) => {
   try {
-    const res = await fetch(`http://localhost:8000/tutors/${id}`, {
-      method: "DELETE",
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/tutors/${id}`,
+      {
+        method: "DELETE",
+      },
+    );
 
     const data = await res.json();
     return data;
@@ -102,23 +121,23 @@ export const cancelById = async (id) => {
 };
 
 // MY BOOK SESSION-------------------->
-// GET bookings by email
+// GET bookings by email====
 export const getMyBookByEmail = async (email) => {
   try {
     const res = await fetch(
-      `http://localhost:8000/my-bookings/email/${email}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/my-bookings/email/${email}`,
       {
         cache: "no-store",
+         // headers: {
+        //   Authorization: `Bearer ${token}`,
+        // },
       }
     );
 
-    if (!res.ok) {
-      throw new Error("Failed to fetch bookings");
-    }
-
-    return await res.json();
+    const data = await res.json();
+    return data;
   } catch (error) {
-    return { success: false, message: error.message };
+    return [];
   }
 };
 
@@ -126,13 +145,13 @@ export const getMyBookByEmail = async (email) => {
 export const handleBookingCancel = async (id) => {
   try {
     const res = await fetch(
-      `http://localhost:8000/my-bookings/${id}`,
+      `${process.env.NEXT_PUBLIC_SERVER_URL}/my-bookings/${id}`,
       {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",
         },
-      }
+      },
     );
 
     if (!res.ok) {
