@@ -3,17 +3,23 @@
 import { AlertDialog, Button } from "@heroui/react";
 
 export function CancelBooking({ book, onCancel }) {
+  const isCancelled = book.status === "cancelled";
+
+  if (isCancelled) {
+    return (
+      <Button
+        disabled
+        className="px-4 py-2 rounded bg-gray-400 text-white cursor-not-allowed"
+      >
+        Cancelled
+      </Button>
+    );
+  }
+
   return (
     <AlertDialog>
       <AlertDialog.Trigger>
-        <Button
-          disabled={book.status === "cancelled"}
-          className={`px-4 py-2 rounded text-white ${
-            book.status === "cancelled"
-              ? "bg-gray-400 cursor-not-allowed"
-              : "bg-red-500"
-          }`}
-        >
+        <Button className="px-4 py-2 rounded bg-red-500 text-white">
           Cancel
         </Button>
       </AlertDialog.Trigger>
@@ -25,16 +31,11 @@ export function CancelBooking({ book, onCancel }) {
 
             <AlertDialog.Header>
               <AlertDialog.Icon status="danger" />
-              <AlertDialog.Heading>
-                Cancel booking?
-              </AlertDialog.Heading>
+              <AlertDialog.Heading>Cancel booking?</AlertDialog.Heading>
             </AlertDialog.Header>
 
             <AlertDialog.Body>
-              <p>
-                This action will cancel your booking.
-                You can’t undo this.
-              </p>
+              <p>This action will cancel your booking. You can’t undo this.</p>
             </AlertDialog.Body>
 
             <AlertDialog.Footer>
