@@ -43,8 +43,10 @@ export default function ImageSlider() {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-
-            <div className="relative w-full ">
+            
+            {/* Responsive container */}
+            <div className="relative w-full aspect-[16/9] sm:aspect-[16/8] md:aspect-[16/7] lg:aspect-[16/6]">
+              
               <Image
                 src={slide.img}
                 alt={slide.title}
@@ -71,7 +73,9 @@ export default function ImageSlider() {
                   </Link>
                 </div>
               </div>
+
             </div>
+
           </SwiperSlide>
         ))}
       </Swiper>
