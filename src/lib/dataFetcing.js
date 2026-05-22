@@ -13,12 +13,13 @@ export const postData = async (data) => {
   return result;
 };
 
-// GET (HOME)---------------->
+// GET (HOME)--------------->
 export const homeData = async () => {
   const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/`);
   const data = await res.json();
   return data;
 };
+
 
 //GET ALL TUTORS
 export const getTutors = async ({
@@ -128,9 +129,9 @@ export const getMyBookByEmail = async (email) => {
       `${process.env.NEXT_PUBLIC_SERVER_URL}/my-bookings/email/${email}`,
       {
         cache: "no-store",
-         // headers: {
-        //   Authorization: `Bearer ${token}`,
-        // },
+         headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
     );
 
