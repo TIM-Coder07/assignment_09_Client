@@ -43,8 +43,8 @@ export default function ImageSlider() {
       >
         {slides.map((slide, index) => (
           <SwiperSlide key={index}>
-            {/* RESPONSIVE ASPECT RATIO (IMPORTANT FIX) */}
-            <div className="relative w-full aspect-[16/9] sm:aspect-[16/7]">
+
+            <div className="relative w-full ">
               <Image
                 src={slide.img}
                 alt={slide.title}
