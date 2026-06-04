@@ -54,7 +54,7 @@ export const getDetailsById = async (tutorId) => {
   return res.json();
 };
 
-// HANDEL BOOK NOW BUTTON ADD FOR BOOK-SESSION ------------->
+// HANDEL BOOK NOW BUTTON ADD FOR BOOK-SESSION POST------------->
 export const handleBookNow = async (user, tutor) => {
   try {
     const bookingInfo = {
@@ -66,6 +66,7 @@ export const handleBookNow = async (user, tutor) => {
       `${process.env.NEXT_PUBLIC_SERVER_URL}/book-session/${tutor._id}`,
       {
         method: "POST",
+        credentials: "include",
         headers: {
           "Content-Type": "application/json",
         },

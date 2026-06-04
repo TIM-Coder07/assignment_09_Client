@@ -18,10 +18,12 @@ const MyTutorsPage = async () => {
     return <Error />;
   }
 
-  const user = session.user;
+  const user = session?.user;
   const token = getToken?.token;
 
-  const tutors = await getMyTutorsByEmail(user.email, token);
+  const tutors = await getMyTutorsByEmail(user?.email, token);
+  console.log('tutors', tutors);
+  
 
   return (
     <div className="min-h-screen bg-gray-50 p-6 md:p-10">
@@ -50,7 +52,7 @@ const MyTutorsPage = async () => {
                 <div className="flex gap-4 p-5">
                   <Image
                     src={tutor?.courseImage}
-                    alt={tutor.courseTitle}
+                    alt={tutor?.courseTitle}
                     height={90}
                     width={90}
                     className="rounded-xl object-cover"
