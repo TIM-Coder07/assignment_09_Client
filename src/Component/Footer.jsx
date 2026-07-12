@@ -119,7 +119,7 @@ const Footer = () => {
         <div className="max-w-7xl mx-auto px-5 sm:px-6 lg:px-8 py-4 flex flex-col sm:flex-row items-center justify-between gap-2 text-sm text-gray-500">
           
           <p>
-            © {new Date().getFullYear()} MediQueue. All rights reserved.
+            © {new Date().getFullYear()} MediQueue. All rights reserved by TAJ.
           </p>
 
           <p>
